@@ -20,5 +20,18 @@ Podcast Producer can upload his own podcast and share with his listeners.
 4. User can search for ohter users
 5. User can share podcasts with followers
 6. Each User have their own profile with timeline
-7. Each User have a onw podcast feed, depending on whom they follow
+7. Each User has a podcast feed, depending on whom they follow
 8. User can like/fav podcasts
+
+###All Software Components and Services
+
+##Front End Mobile App Components
+
+1. Landing page
+  a. Sign in
+    i. Email/password
+    ii. Automatic sign in
+  b. Sign up
+    i. User registers for an account with screen name, email, password, and photo(?)
+2. Menu (Located on almost all pages)
+3. Activity Feed - Shows all the activity (mostly posts) of accounts that they are following.
