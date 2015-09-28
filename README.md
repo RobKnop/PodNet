@@ -28,24 +28,24 @@ Podcast Producer can upload his own podcast and share with his listeners.
 ###Front End Mobile App Components
 
 ####Pages
-1. Landing page
-  a. Sign in
-    i. Email/password
-    ii. Automatic sign in
-  b. Sign up
-    i. User registers for an account with screen name, email, password, and photo(?)
-2. Menu (Located and can be accessed by almost all pages)
-  a. Upload Podcast
-  b. Profile
-  c. Settings
-3. Navigation Bar (Located and can be accessed by almost all pages) 
-  a. Links to other pages: Activity Feed, New Post, Search
+1. Landing page<br />
+  a. Sign in<br />
+ 	&nbsp;&nbsp;&nbsp;i. Email/password<br />
+  &nbsp;&nbsp;&nbsp;ii. Automatic sign in<br />
+  b. Sign up<br />
+  &nbsp;&nbsp;&nbsp;i. User registers for an account with screen name, email, password, and photo(?)<br />
+2. Menu (Located and can be accessed by almost all pages)<br />
+  a. Upload Podcast<br />
+  b. Profile<br />
+  c. Settings<br />
+3. Navigation Bar (Located and can be accessed by almost all pages) <br />
+  a. Links to other pages: Activity Feed, New Post, Search<br />
 4. Activity Feed - Shows all the recent activity (mostly posts) of the accounts that they are following.
 5. New Post - Allows user to share podcasts
 6. Search - Searches archive for posts/podcasts
-7. Profile
-  a. Able to edit what the user's profile looks like
-  b. Able to edit previous posts
+7. Profile<br />
+  a. Able to edit what the user's profile looks like<br />
+  b. Able to edit previous posts<br />
 8. Upload Podcast
 9. Settings
 
