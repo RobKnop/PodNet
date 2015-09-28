@@ -25,33 +25,56 @@ Podcast Producer can upload his own podcast and share with his listeners.
 
 ##All Software Components and Services
 
-###Front End Mobile App Components
+###Back End Compenents for MVP
+
+#### User account (Object)
+1. Real name
+2. unique network name
+3. image (?)
+4. followers
+5. following
+6. own podcast
+
+###Front End Mobile App Components for MVP
 
 ####UI-Views (Website)
 1. Landing page<br />
   a. Sign in<br />
  	&nbsp;&nbsp;&nbsp;i. Email/password<br />
-  &nbsp;&nbsp;&nbsp;ii. Automatic sign in<br />
+  &nbsp;&nbsp;&nbsp;ii. Automatic sign in (Checkbox)<br />
   b. Sign up<br />
-  &nbsp;&nbsp;&nbsp;i. User registers for an account with screen name, email, password, and photo(?)<br />
+  &nbsp;&nbsp;&nbsp;i. User registers for an account with screen name, email, password, and photo<br />
 2. Activity Feed - Shows all the recent activity (mostly posts) of the accounts that they are following.
 3. New Post - Allows user to share podcasts
 4. Search - Searches archive for posts/podcasts
-5. Profile<br />
-  a. Able to edit what the user's profile looks like<br />
-  b. Able to edit previous posts<br />
-6. Upload Podcast
-7. Settings
+5. Follower list (all podcast form people you are following, kind of subcription list)
+6. Profile<br />
+  a. Image (?)
+  b. real name Name
+  c. unique network name
+  d. own podast
+  e. who he self follow (Number)
+  f. adding opiton to own follower list
+  g. number of followers
+  h. who is followin him (?)
+  i. Location (?)
+  j. own website (?)
+  functionality:
+  a. Able to edit what the user's profile looks like (with preview?)<br />
+  b. Able to edit previous posts(?)<br />
+7. Upload Podcast
+8. Add new follower/podcast with recommanditon for exploring new podcaster
 
-###UI-Elements
+####UI-Elements
 1. Menu (Located and can be accessed by almost all pages)<br />
-  a. Upload Podcast<br />
-  b. Profile<br />
-  c. Settings<br />
-2. Navigation Bar (Located and can be accessed by almost all pages) <br />
-  a. Links to other pages: Activity Feed, New Post, Search<br />
+  a. Activity feed
+  b. Follower list
+  c. Upload Podcast<br />
+  d. Profile<br />
+2. Navigation Bar on top (Located and can be accessed by almost all pages) <br />
+  a. Links to other pages: New Post, Search, Add new Follower<br />
 
-###Podcast episode (Object)
+####Podcast episode (Object)
 has following attributes
 
 1. Title
@@ -65,7 +88,7 @@ has following attributes
 6. Meta data (Length, size, created)
 7. Tags (?)
 
-###Post
+####Post (Object)
 Posts cotain a podcast episode with a own iniatl comment from the PostWriter
 Posts have the following functionality
 
