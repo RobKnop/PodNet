@@ -51,6 +51,7 @@ Podcast Producer can upload his own podcast and share with his listeners.
 
 ####Post
 A post has the following components
+
 1. Title
 2. Description (text and possibly images).
 3. Link to Podcast
@@ -60,6 +61,7 @@ A post has the following components
 5. Author
 
 Posts have the following functionality
+
 1. Like
 2. Favorite
 3. Comment(?)
