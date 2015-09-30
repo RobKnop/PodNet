@@ -18,7 +18,7 @@ Podcast Producer can upload his own podcast and share with his listeners.
 3. User can follow other Users
 3. User can search for uploades podcast
 4. User can search for other users
-5. User can share podcasts with followers
+5. User can write a post to share podcasts with followers
 6. Each User have their own profile with timeline
 7. Each User has a podcast feed, depending on whom they follow
 8. User can like/fav podcasts
