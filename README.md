@@ -1,7 +1,7 @@
 # PodNet
 ##Podcast Network
-by Andrew Zhang, Robert Knop
-- class group project @ CSULB
+by Andrew Zhang, Robert Knop <br />
+working in a class group project @ CSULB
 
 ###Objectives
 The application connects Podcast Producer and Podcast Consumer in a social networking way.
@@ -16,12 +16,12 @@ Podcast Producer can upload his own podcast and share with his listeners.
 1. User can sign up for an account
 2. User can upload own podcasts
 3. User can follow other Users
-3. User can search for uploades podcast
-4. User can search for other users
-5. User can share podcasts with followers
-6. Each User have their own profile with timeline
-7. Each User has a podcast feed, depending on whom they follow
-8. User can like/fav podcasts
+4. User can search for uploaded podcast
+5. User can search for other users
+6. User can write a post to share podcasts with followers
+7. Each User have their own profile with timeline
+8. Each User has a podcast feed, depending on whom they follow
+9. User can like/fav podcasts
 
 ##All Software Components and Services
 
@@ -30,7 +30,7 @@ Podcast Producer can upload his own podcast and share with his listeners.
 #### User account (Object)
 1. Real name
 2. unique network name
-3. image (?)
+3. image (? as a placeholder first)
 4. followers
 5. following
 6. own podcast
@@ -79,14 +79,15 @@ has following attributes
 
 1. Title
 2. Image
-2. Topic and Content description
-3. Link to Podcast (actuall file)
+3. Topic (name of the podcast series)
+4. Content description
+5. Link to Podcast (actuall file)
   a. Linked to podcast in our database
   b. Linked to podcast through url
-4. Date
-5. Author
-6. Meta data (Length, size, created)
-7. Tags (?)
+6. Date
+7. Author
+8. Meta data (Length, size, created)
+9. Tags (?)
 
 ####Post (Object)
 Posts cotain a podcast episode with a own iniatl comment from the PostWriter
