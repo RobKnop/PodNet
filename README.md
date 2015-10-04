@@ -1,6 +1,6 @@
 # PodNet
 ##Podcast Network
-by Andrew Zhang, Robert Knop
+by Andrew Zhang, Robert Knop <br />
 working in a class group project @ CSULB
 
 ###Objectives
