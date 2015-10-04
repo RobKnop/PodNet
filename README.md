@@ -25,7 +25,7 @@ Podcast Producer can upload his own podcast and share with his listeners.
 
 ##All Software Components and Services
 
-###Back End Compenents for MVP
+###Back End Components for MVP
 
 #### User account (Object)
 1. Real name
@@ -47,23 +47,23 @@ Podcast Producer can upload his own podcast and share with his listeners.
 2. Activity Feed - Shows all the recent activity (mostly posts) of the accounts that they are following.
 3. New Post - Allows user to share podcasts
 4. Search - Searches archive for posts/podcasts
-5. Follower list (all podcast form people you are following, kind of subcription list)
+5. Follower list (all podcast form people you are following, kind of subscription list)
 6. Profile<br />
   a. Image (?)
   b. real name Name
   c. unique network name
-  d. own podast
+  d. own podcast
   e. who he self follow (Number)
-  f. adding opiton to own follower list
+  f. adding option to own follower list
   g. number of followers
-  h. who is followin him (?)
+  h. who is following him (?)
   i. Location (?)
   j. own website (?)
   functionality:
   a. Able to edit what the user's profile looks like (with preview?)<br />
   b. Able to edit previous posts(?)<br />
 7. Upload Podcast
-8. Add new follower/podcast with recommanditon for exploring new podcaster
+8. Add new follower/podcast with recommendations for exploring new podcaster
 
 ####UI-Elements
 1. Menu (Located and can be accessed by almost all pages)<br />
@@ -81,7 +81,7 @@ has following attributes
 2. Image
 3. Topic (name of the podcast series)
 4. Content description
-5. Link to Podcast (actuall file)
+5. Link to Podcast (actual file)
   a. Linked to podcast in our database
   b. Linked to podcast through url
 6. Date
@@ -90,7 +90,7 @@ has following attributes
 9. Tags (?)
 
 ####Post (Object)
-Posts cotain a podcast episode with a own iniatl comment from the PostWriter
+Posts contain a podcast episode with a own initial comment from the PostWriter
 Posts have the following functionality
 
 1. Like
