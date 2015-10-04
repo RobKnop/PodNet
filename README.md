@@ -16,7 +16,7 @@ Podcast Producer can upload his own podcast and share with his listeners.
 1. User can sign up for an account
 2. User can upload own podcasts
 3. User can follow other Users
-4. User can search for uploades podcast
+4. User can search for uploaded podcast
 5. User can search for other users
 6. User can write a post to share podcasts with followers
 7. Each User have their own profile with timeline
@@ -30,7 +30,7 @@ Podcast Producer can upload his own podcast and share with his listeners.
 #### User account (Object)
 1. Real name
 2. unique network name
-3. image (?)
+3. image (? as a placeholder first)
 4. followers
 5. following
 6. own podcast
