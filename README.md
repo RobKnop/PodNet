@@ -1,7 +1,7 @@
 # PodNet
 ##Podcast Network
 by Andrew Zhang, Robert Knop
-- class group project @ CSULB
+working in a class group project @ CSULB
 
 ###Objectives
 The application connects Podcast Producer and Podcast Consumer in a social networking way.
