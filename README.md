@@ -90,10 +90,11 @@ has following attributes
 9. Tags (?)
 
 ####Post (Object)
-Posts contain a podcast episode with a own initial comment from the PostWriter
-Posts have the following functionality
+Posts contain a podcast episode with a own initial comment from the PostWriter <br />
+Posts have the following functionality:
 
-1. Like
-2. Favorite (safe in Listening Later list)
-3. Comment(?)
-4. Share/Retweet(?)
+1. Link to podcast episode
+3. Like
+4. Favorite (?) (safe in Listening Later list)
+5. Comment(?)
+6. Share/Retweet(?)
