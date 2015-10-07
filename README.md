@@ -33,7 +33,8 @@ Podcast Producer can upload his own podcast and share with his listeners.
 3. image (? as a placeholder first)
 4. followers
 5. following
-6. own podcast
+6. own podcast (self published)
+7. subscription list (other podcast in the community)
 
 ###Front End Mobile App Components for MVP
 
