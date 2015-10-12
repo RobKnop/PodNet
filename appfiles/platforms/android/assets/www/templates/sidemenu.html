@@ -1,0 +1,34 @@
+﻿<ion-side-menus enable-menu-with-back-views="true">
+    <!-- Center content -->
+    <ion-side-menu-content>
+        <ion-header-bar class="bar-dark">
+            <h1 class="title">PodNet</h1>
+        </ion-header-bar>
+        <ion-content>
+        </ion-content>
+        <ion-nav-view name="menu-content"></ion-nav-view>
+    </ion-side-menu-content>
+
+    <!-- Left menu -->
+    <ion-side-menu side="left">
+        <ion-header-bar class="bar-dark">
+            <h1 class="title">Menu</h1>
+        </ion-header-bar>
+        <ion-content>
+            <ion-list>
+                <ion-item menu-close ng-click="">
+                    Upload Podcast
+                </ion-item>
+                <ion-item menu-close href="">
+                    New Post
+                </ion-item>
+                <ion-item menu-close href="">
+                    Search
+                </ion-item>
+                <ion-item menu-close href="">
+                    Find People to Follow
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>
