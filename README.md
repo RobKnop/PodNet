@@ -92,7 +92,7 @@ has following attributes
 
 ####Post (Object)
 Posts contain a podcast episode with a own initial comment from the PostWriter. <br />
-Podcast episode will be select form the PostWriters own library (subscription list and self published ones) <br />
+Podacst episode will be select form the PostWriters own library (subscription list and self published ones) <br />
 Posts have the following functionality:
 
 1. Link to podcast episode
