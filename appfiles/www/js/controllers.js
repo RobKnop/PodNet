@@ -5,6 +5,16 @@ angular.module('starter.controllers', [])
         console.log('Sign-In', user);
         $state.go('sidemenu.tab.dash');
     };
+    $scope.goToSignUp = function (user) {
+        console.log('GoTo Sign-Up', user);
+        $state.go('signup');
+    };
+})
+.controller('SignUpCtrl', function ($scope, $state) {
+    $scope.signUp = function (user) {
+        console.log('Sign-Up Finished', user);
+        $state.go('sidemenu.tab.dash');
+    };
 })
 .controller('DashCtrl', function ($scope) { })
 
