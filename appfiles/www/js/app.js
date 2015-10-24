@@ -30,7 +30,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-
+      /*.state('landingPage', {
+          url: '/landingPage',
+          views: {
+              'landingPage': {
+                  templateUrl: 'templates/landingPage.html',
+                  controller: 'LandingCtrl'
+              }
+          }
+      })*/
   // setup an abstract state for the tabs directive
       .state('sidemenu', {
           url: "/sidemenu",
@@ -51,7 +59,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   
    
-
+    .state('login', {
+        url: '/login',
+        templateUrl: 'templates/tab-login.html',
+        controller: 'LoginCtrl'
+    })
     // Each tab has its own nav history stack:
   .state('sidemenu.tab.dash', {
     url: '/dash',
@@ -90,9 +102,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'AccountCtrl'
       }
     }
-  });
+  })
+   
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/sidemenu/tab/dash');
+  $urlRouterProvider.otherwise('/login');
 
 });
