@@ -13,8 +13,9 @@
             </label>
             <label class="item item-input">
                 <input type="text" placeholder="Name" ng-model="user.name">
+                
             </label>
-            <p>This will be your unique name that others can see.</p>
+            <p style="padding-left: 1.0em;">This will be your unique name that others can see.</p>
 
             <label class="item item-input">
                 <input type="text" placeholder="First Name" ng-model="user.firstname">
@@ -26,6 +27,9 @@
         <div class="padding">
             <button class="button button-block button-positive" ng-click="signUp(user)">
                 Sign Up
+            </button>
+            <button class="button button-block button-positive" ng-click="goToLogin(user)">
+                Cancel
             </button>
         </div>
     </ion-content>

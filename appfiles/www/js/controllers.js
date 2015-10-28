@@ -15,6 +15,10 @@ angular.module('starter.controllers', [])
         console.log('Sign-Up Finished', user);
         $state.go('sidemenu.tab.dash');
     };
+    $scope.goToLogin = function (user) {
+        console.log('Sign-Up Cancelled', user);
+        $state.go('login');
+    };
 })
 .controller('DashCtrl', function ($scope) { })
 
