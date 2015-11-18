@@ -1,11 +1,11 @@
 /* Empty. Add your own CSS if you like */
 .loginlogo {
-    max-height: 50%;
+    max-height: 40%;
     max-width: 75%;
     margin-left:auto;
     margin-right:auto;
     display:block;
 }
 body{
-    margin-top:10px;
+    top:30px;
 }

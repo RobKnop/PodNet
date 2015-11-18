@@ -14,11 +14,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
+      //window.statusbar.visible = true;
     if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-        StatusBar.styleLightContent();
-        
+        // org.apache.cordova.statusbar required
+        StatusBar.styleDefault();
     }
+    /*if (window.StatusBar) {
+      // org.apache.cordova.statusbar required
+        window.StatusBar.styleLightContent();
+        window.st
+        StatusBar.hide();
+    }*/
   });
 })
 .config(function ($ionicConfigProvider) {
