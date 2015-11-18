@@ -213,6 +213,7 @@ publish/
 *.[Pp]ublish.xml
 *.azurePubxml
 # but database connection strings (with potential passwords) will be unencrypted
+/serverfiles/testJSON.json
 *.pubxml
 *.publishproj
 
