@@ -12,11 +12,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/api/v1/users/:id', function (req, res) {
-    MongoClient.connect('mongodb://localhost:27017/test', function(err, db) {
+    MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
         if (err) {
             throw err;
         }
-        db.collection("users").findOne({"_id" : req.params.id}, function(err, requestedUser) {
+        db.collection("users").findOne({"_id": req.params.id}, function (err, requestedUser) {
             if (err) {
                 throw err;
             }
@@ -28,23 +28,23 @@ app.get('/api/v1/users/:id', function (req, res) {
     });
 });
 
-app.post('/api/v1/signup', jsonParser, function(req, res){
+app.post('/api/v1/signup', jsonParser, function (req, res) {
     if (!req.body) return res.sendStatus(400);
     console.log("POST user: ");
     console.log(req.body);      // your JSON
-    MongoClient.connect('mongodb://localhost:27017/test', function(err, db) {
+    MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
         if (err) {
             throw err;
         }
-        db.collection("users").insert(req.body, function(err) {
+        db.collection("users").insert(req.body, function (err) {
             if (err) {
                 console.log("ERROR: " + err.message);
-                res.send({"message" : "ERROR: User already exists!" });
+                res.send({"message": "ERROR: User already exists!"});
                 //throw err;
-            }else {
+            } else {
                 console.log("POST user: ");
                 console.log(req.body);
-                res.send({"message" : "User added" });    // echo the result back
+                res.send({"message": "User added"});    // echo the result back
                 db.close();
             }
         });
@@ -59,5 +59,3 @@ var server = app.listen(8080, function () {
 
     console.log('Example app listening at http://%s:%s', host, port);
 });
-
-
