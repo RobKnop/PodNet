@@ -36,11 +36,20 @@ app.post('/api/v1/signup', jsonParser, function(req, res){
         if (err) {
             throw err;
         }
-        db.collection("users").insert(req.body);
-        db.close();
-    });
+        db.collection("users").insert(req.body, function(err) {
+            if (err) {
+                console.log("ERROR: " + err.message);
+                res.send({"message" : "ERROR: User already exists!" });
+                //throw err;
+            }else {
+                console.log("POST user: ");
+                console.log(req.body);
+                res.send({"message" : "User added" });    // echo the result back
+                db.close();
+            }
+        });
 
-    res.send(req.body);    // echo the result back
+    });
 
 });
 
