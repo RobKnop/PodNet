@@ -11,26 +11,31 @@ app.get('/', function (req, res) {
     res.send('Hello World! Podcast are the best thing on earth!');
 });
 
-app.get('/api/v1/robknop', function (req, res) {
-    res.send({
-        username : "robknop",
-        firstname : "Robert",
-        lastname : "Knop",
-        followers : ["username1", "username2"],
-        following : ["username1", "username2"],
-        publishedPodcasts : ["podcast1_id", "podcast2_id"],
-        subscriptionList : ["topic1", "topic2"]
+app.get('/api/v1/users/:id', function (req, res) {
+    MongoClient.connect('mongodb://localhost:27017/test', function(err, db) {
+        if (err) {
+            throw err;
+        }
+        db.collection("users").findOne({"_id" : req.params.id}, function(err, requestedUser) {
+            if (err) {
+                throw err;
+            }
+            console.log("GET user: ");
+            console.log(requestedUser);
+            res.send(requestedUser);
+            db.close();
+        });
     });
 });
 
 app.post('/api/v1/signup', jsonParser, function(req, res){
     if (!req.body) return res.sendStatus(400);
+    console.log("POST user: ");
     console.log(req.body);      // your JSON
     MongoClient.connect('mongodb://localhost:27017/test', function(err, db) {
         if (err) {
             throw err;
         }
-        console.log("Connection to database successful");
         db.collection("users").insert(req.body);
         db.close();
     });
