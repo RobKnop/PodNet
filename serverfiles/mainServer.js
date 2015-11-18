@@ -31,6 +31,7 @@ app.get('/api/v1/users/:id', function (req, res) {
 app.post('/api/v1/signup', jsonParser, function (req, res) {
     if (!req.body) return res.sendStatus(400);
     console.log("POST user: ");
+    req.body.createdOn = new Date();
     console.log(req.body);      // your JSON
     MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
         if (err) {
@@ -54,7 +55,7 @@ app.post('/api/v1/signup', jsonParser, function (req, res) {
 });
 
 var server = app.listen(8080, function () {
-    var host = "54.183.248.71"; //Public IP of EC2 instance
+    var host = "54.183.235.161"; //Public IP of EC2 instance
     var port = server.address().port; //Give permission in AWS security group
 
     console.log('Example app listening at http://%s:%s', host, port);
