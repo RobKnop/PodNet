@@ -28,6 +28,23 @@ app.get('/api/v1/users/:id', function (req, res) {
     });
 });
 
+app.get('/api/v1/users', function (req, res) {
+    MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+        if (err) {
+            throw err;
+        }
+        db.collection("users").find().limit(100).toArray(function (err, allUsers) {
+            if (err) {
+                throw err;
+            }
+            console.log("GET all users: ");
+            console.log(allUsers);
+            res.send(allUsers);
+            db.close();
+        });
+    });
+});
+
 app.post('/api/v1/signup', jsonParser, function (req, res) {
     if (!req.body) return res.sendStatus(400);
     console.log("POST user: ");
