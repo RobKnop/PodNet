@@ -20,9 +20,13 @@ app.get('/api/v1/users/:id', function (req, res) {
             if (err) {
                 throw err;
             }
-            console.log("GET user: ");
-            console.log(requestedUser);
-            res.send(requestedUser);
+            if (requestedUser) {
+                console.log("GET user: ");
+                console.log(requestedUser);
+                res.send(requestedUser);
+            } else {
+                res.send({message: "No user found!"});
+            }
             db.close();
         });
     });
