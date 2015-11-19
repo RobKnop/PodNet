@@ -28,6 +28,33 @@ app.get('/api/v1/users/:id', function (req, res) {
     });
 });
 
+app.get('/api/v1/users/search/:query', function (req, res) {
+    MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+        if (err) {
+            throw err;
+        }
+        db.collection("users").find({
+            $or: [
+                {_id: req.params.query},
+                {firstName: req.params.query},
+                {lastName: req.params.query}
+            ]
+        }).toArray(function (err, requestedUsers) {
+            if (err) {
+                throw err;
+            }
+            if (requestedUsers.length <= 0) {
+                res.send({message: "No user found!"});
+            } else {
+                console.log("Search result: ");
+                console.log(requestedUsers);
+                res.send(requestedUsers);
+            }
+            db.close();
+        });
+    });
+});
+
 app.get('/api/v1/users', function (req, res) {
     MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
         if (err) {
