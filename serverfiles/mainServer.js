@@ -43,7 +43,7 @@ app.get('/api/v1/users/search/:query', function (req, res) {
                 {firstName: req.params.query},
                 {lastName: req.params.query}
             ]
-        }).toArray(function (err, requestedUsers) {
+        }).limit(20).toArray(function (err, requestedUsers) {
             if (err) {
                 throw err;
             }
@@ -97,9 +97,7 @@ app.post('/api/v1/signup', jsonParser, function (req, res) {
                 db.close();
             }
         });
-
     });
-
 });
 
 var server = app.listen(8080, function () {
