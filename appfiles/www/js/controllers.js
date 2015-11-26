@@ -5,9 +5,7 @@
     }, function(err) {
         console.error('ERR', err);
         // err.status will contain the status code
-    })310-530-3900
-    (310) 784-0706
-    (310) 530-3177
+    })
 })*/
 angular.module('starter.controllers', [])
 .controller('LoginCtrl', function ($scope, $state, $http, $ionicPopup)
@@ -114,5 +112,16 @@ angular.module('starter.controllers', [])
 })
 
 .controller('LandingCtrl', function ($scope) { })
+.controller('SearchCtrl', function ($scope) {
+    var doSearch = ionic.debounce(function (query) {
+        Flickr.search(query).then(function (resp) {
+            $scope.photos = resp;
+        });
+    }, 500);
 
+    $scope.search = function () {
+        doSearch($scope.query);
+    }
+
+})
 ;
