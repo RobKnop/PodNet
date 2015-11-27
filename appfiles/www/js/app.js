@@ -37,15 +37,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-      /*.state('landingPage', {
-          url: '/landingPage',
-          views: {
-              'landingPage': {
-                  templateUrl: 'templates/landingPage.html',
-                  controller: 'LandingCtrl'
-              }
-          }
-      })*/
+
   // setup an abstract state for the tabs directive
       .state('sidemenu', {
           url: "/sidemenu",
@@ -114,6 +106,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'AccountCtrl'
       }
     }
+  })
+  .state('sidemenu.tab.search', {
+      url: '/search',
+      views: {
+          'search': {
+              templateUrl: 'templates/search.html',
+              controller: 'SearchCtrl'
+          }
+      }
   })
    
 

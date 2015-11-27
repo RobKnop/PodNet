@@ -47,27 +47,3 @@ angular.module('starter.services', [])
     }
   };
 });
-
-angular.module('ionicApp', ['ionic', 'ngResource'])
-.factory('SearchResults', function () {
-    var searchResults = { '_id': 'No results found' };
-    return {
-        search: function (query) {
-            var searchURL = 'http://54.183.235.161:8080/api/v1/users/search/';
-            getPasswordRequestURL += query;
-
-
-            $http({
-                method: 'GET',
-                url: searchURL,
-                data: null,
-                headers: { 'Content-Type': 'application/json' }
-            }).then(function (searchResults) {
-                console.log('Success', searchResults);
-            }, function (err) {
-                searchResults = { '_id': 'No results found' };
-            });
-            return searchResults;
-        }
-    }
-});

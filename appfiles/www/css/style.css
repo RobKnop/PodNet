@@ -9,3 +9,16 @@
 body{
     top:30px;
 }
+#search-bar {
+  background: none;
+  width: 100%;
+  height: 40px;
+  
+}
+#search-bar .item {
+  background: none;
+  border: none;
+}
+#search-input {
+  text-align: center;
+}

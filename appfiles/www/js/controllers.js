@@ -24,7 +24,7 @@ angular.module('starter.controllers', [])
             headers: { 'Content-Type': 'application/json' }
         }).then(function (resp) {
             console.log('Success', resp);
-            console.log('test', resp.data._id);
+
 
             if (user.password == resp.data.firstName) {
                 $state.go('sidemenu.tab.dash');
@@ -112,15 +112,49 @@ angular.module('starter.controllers', [])
 })
 
 .controller('LandingCtrl', function ($scope) { })
-.controller('SearchCtrl', function ($scope) {
-    var doSearch = ionic.debounce(function (query) {
-        Flickr.search(query).then(function (resp) {
-            $scope.photos = resp;
-        });
-    }, 500);
 
-    $scope.search = function () {
-        doSearch($scope.query);
+.controller('SearchCtrl', function ($scope, $state, $http) {
+    var searchResults = searchResults = [{
+        '_id': 'No results found',
+        'firstName': '',
+        'lastName': ''
+    }];
+    $scope.search = function (query) {
+        if (query.length > 2) {
+            var searchURL = 'http://54.183.235.161:8080/api/v1/users/search/';
+            searchURL += query;
+
+
+            $http({
+                method: 'GET',
+                url: searchURL,
+                data: null,
+                headers: { 'Content-Type': 'application/json' }
+            }).then(function (resp) {
+                console.log('Success', resp);
+                
+                if (resp.data.message == 'No user found!') {
+                    $scope.searchResults = [{
+                        '_id': 'No results found',
+                        'firstName': '',
+                        'lastName': ''
+                    }];
+                }
+                else {
+                    $scope.searchResults = resp.data;
+                }
+                
+            }, function (err) {
+                $scope.searchResults = [{
+                    '_id': 'No results found',
+                    'firstName': '',
+                    'lastName': ''
+                }];
+                
+            });
+            
+            //$scope.$apply(function () { $scope.searchResults = searchResults; });
+        }
     }
 
 })
