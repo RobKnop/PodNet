@@ -96,35 +96,42 @@ module.exports = function (app) {
         });
     });
 
-    app.get('http://54.183.235.161:8080/api/v1/users/:current/addfollower/:newFollower', function (req, res) {
+    app.get('/api/v1/addfollower', function (req, res) {
         MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
             if (err) {
                 throw err;
             }
-            var arrayFollowing;
+            var currentUser = req.param('current');
+            var newFollower = req.param('newFollower');
 
-            db.collection("users").findOne({"_id": req.params.current}, function (err, requestedUser) {
+            db.collection("users").findOne({"_id": currentUser}, function (err, requestedUser) {
                 if (err) {
                     throw err;
                 }
+                console.log(requestedUser);
                 if (requestedUser) {
-                    arrayFollowing = requestedUser.following;
-                    console.log(arrayFollowing);
+
+                    db.collection("users").update( {_id : currentUser}, { $addToSet: { "following": newFollower }} ,function (err, updatedFollower) {
+                        if (err) {
+                            throw err;
+                        }
+                        console.log("Add user as follower: ");
+                        console.log(updatedFollower);
+
+                    });
+                    db.collection("users").update( {_id : newFollower}, { $addToSet: { "follower": currentUser }} ,function (err, updatedFollower) {
+                        if (err) {
+                            throw err;
+                        }
+                        console.log("Add user as following: ");
+                        console.log(updatedFollower);
+
+                    });
+                    res.send({message: currentUser + " successfully follow " + newFollower});
 
                 } else {
                     res.send({message: "No user found!"});
                 }
-                db.close();
-            });
-
-            db.collection("users").update( {_id : req.params.current}, { $set: { "following": arrayFollowing}} ,function (err, allUsers) {
-                if (err) {
-                    throw err;
-                }
-                console.log("GET all users: ");
-                console.log(allUsers);
-                res.send(allUsers);
-                db.close();
             });
         });
     });
