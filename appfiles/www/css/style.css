@@ -9,6 +9,36 @@
 body{
     top:30px;
 }
+.background, .background .pane {
+    background-color: #B2DFDB;
+}
+input::-webkit-input-placeholder {
+    color: darkslategray;
+   
+}
+.background .item-complex .item-content , .background .item{
+    background-color: #E0F2F1;
+    border: 1px solid #00695C;
+}
+
+.background .button{
+    background-color: #80CBC4;
+    color: black;
+    font-weight: 800;
+    border: 3px solid #00695C;
+}
+.topbar{
+    background-color:#004D40;
+}
+.sidemenubar{
+     background-color:#00796B;
+}
+.title{
+    color:white;
+}
+.background .noborder{
+    border: 0px solid #000000 !important;
+}
 #search-bar {
   background: none;
   width: 100%;
@@ -21,4 +51,10 @@ body{
 }
 #search-input {
   text-align: center;
+}
+.tabContainer{
+    padding-top:50px;
+    max-height:60%;
+    position:relative;
+    
 }

@@ -173,5 +173,14 @@ angular.module('starter.controllers', [])
     var selfData = JSON.parse(window.localStorage['selfData']);
     //console.log('selfData', selfData);
     $scope.name = selfData.firstName + " " + selfData.lastName;
+    $scope.nfollowers = selfData.followers.length;
+    
+    
+    if (selfData.following.length) {
+        $scope.nfollowing = selfData.following.length;
+    }
+    else {
+        $scope.nfollowing = 0;
+    }
 })
 ;

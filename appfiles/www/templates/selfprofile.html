@@ -1,5 +1,25 @@
 ﻿<ion-view view-title="View Profile">
     <ion-content class="padding">
         <h1>{{name}}</h1>
+        <p>Description of podcasts I listen to or post</p>
+        <p>{{nfollowers}} followers, following {{nfollowing}}</p>
+        <div class="tabContainer">
+            <ion-tabs class="tabs-striped">
+
+                <ion-tab title="Posts" ui-sref="sidemenu.tab.selfprofile.posts">
+                    <ion-nav-view name="posts"></ion-nav-view>
+                </ion-tab>
+
+                <ion-tab title="Followers" ui-sref="sidemenu.tab.selfprofile.followers">
+                    <ion-nav-view name="followers"></ion-nav-view>
+                </ion-tab>
+
+                <ion-tab title="Following" ui-sref="sidemenu.tab.selfprofile.following">
+                    <ion-nav-view name="following"></ion-nav-view>
+                </ion-tab>
+
+            </ion-tabs>
+        </div>
+
     </ion-content>
 </ion-view>
