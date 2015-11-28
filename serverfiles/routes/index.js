@@ -1,3 +1,4 @@
+'use strict';
 var MongoClient = require('mongodb').MongoClient;
 
 // create application/json parser
@@ -91,6 +92,39 @@ module.exports = function (app) {
                     res.send({"message": "User added"});    // echo the result back
                     db.close();
                 }
+            });
+        });
+    });
+
+    app.get('http://54.183.235.161:8080/api/v1/users/:current/addfollower/:newFollower', function (req, res) {
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+            var arrayFollowing;
+
+            db.collection("users").findOne({"_id": req.params.current}, function (err, requestedUser) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedUser) {
+                    arrayFollowing = requestedUser.following;
+                    console.log(arrayFollowing);
+
+                } else {
+                    res.send({message: "No user found!"});
+                }
+                db.close();
+            });
+
+            db.collection("users").update( {_id : req.params.current}, { $set: { "following": arrayFollowing}} ,function (err, allUsers) {
+                if (err) {
+                    throw err;
+                }
+                console.log("GET all users: ");
+                console.log(allUsers);
+                res.send(allUsers);
+                db.close();
             });
         });
     });
