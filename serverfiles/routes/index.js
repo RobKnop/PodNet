@@ -111,24 +111,34 @@ module.exports = function (app) {
                 console.log(requestedUser);
                 if (requestedUser) {
 
-                    db.collection("users").update( {_id : currentUser}, { $addToSet: { "following": newFollower }} ,function (err, updatedFollower) {
-                        if (err) {
-                            throw err;
-                        }
-                        console.log("Add user as follower: ");
-                        console.log(updatedFollower);
+                    if (requestedUser.following.indexOf(newFollower) <= 0) {
 
-                    });
-                    db.collection("users").update( {_id : newFollower}, { $addToSet: { "follower": currentUser }} ,function (err, updatedFollower) {
-                        if (err) {
-                            throw err;
-                        }
-                        console.log("Add user as following: ");
-                        console.log(updatedFollower);
+                        db.collection("users").update({_id: newFollower}, {$addToSet: {"follower": currentUser}}, function (err, updatedFollower) {
+                            if (err) {
+                                throw err;
+                            }
+                            console.log("Add user as following: ");
+                            console.log(updatedFollower);
 
-                    });
-                    res.send({message: currentUser + " successfully follow " + newFollower});
+                            if (updatedFollower.result.nModified != 0) {
 
+                                db.collection("users").update({_id: currentUser}, {$addToSet: {"following": newFollower}}, function (err, update) {
+                                    if (err) {
+                                        throw err;
+                                    }
+                                    console.log("Add user as follower: ");
+                                    console.log(update);
+
+                                });
+
+                                res.send({message: currentUser + " successfully follow " + newFollower});
+                            } else {
+                                res.send({message: newFollower + "does not exist!"});
+                            }
+                        });
+                    } else {
+                        res.send({message: currentUser + " already follows " + newFollower});
+                    }
                 } else {
                     res.send({message: "No user found!"});
                 }
