@@ -24,9 +24,17 @@ angular.module('starter.controllers', [])
             headers: { 'Content-Type': 'application/json' }
         }).then(function (resp) {
             console.log('Success', resp);
+            if (resp.data.message == 'No user found!') {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Login failed!',
+                    template: 'Username or Password Incorrect'
+                });
+            }
+            else {
+                $state.go('sidemenu.tab.dash');
+            }
 
-
-            if (user.password == resp.data.firstName) {
+            /*if (user.password == resp.data.firstName) {
                 $state.go('sidemenu.tab.dash');
             }
             else {
@@ -34,7 +42,7 @@ angular.module('starter.controllers', [])
                     title: 'Login failed!',
                     template: 'Username or Password Incorrect'
                 });
-            }
+            }*/
 
         }, function (err) {
             var alertPopup = $ionicPopup.alert({
