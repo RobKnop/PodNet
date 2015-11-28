@@ -3,11 +3,9 @@
         <img class ="loginlogo" src="img/podnetlogoname.png" />
         <div class="list">
             <label class="item item-input">
-                <input type="email" placeholder="Email" ng-model="user.email">
+                <input type="text" placeholder="Username" ng-model="user.username">
             </label>
-            <label class="item item-input">
-                <input type="password" placeholder="Password" ng-model="user.password">
-            </label>
+            
         </div>
         <div class="padding">
             <button class="button button-block button-positive" ng-click="signIn(user)">
@@ -17,7 +15,7 @@
                 Sign Up
             </button>
             <p class="text-center">
-                <a href="#/forgot-password">Forgot password</a>
+                <a ui-sref="sidemenu.tab.search">Forgot password</a>
             </p>
         </div>
     </ion-content>
