@@ -9,6 +9,7 @@
 })*/
 angular.module('starter.controllers', [])
 .controller('LoginCtrl', function ($scope, $state, $http, $ionicPopup) {
+    //remove windowlocalstorage so can't use last login
     $scope.signIn = function (user) {
         
 
@@ -153,6 +154,7 @@ angular.module('starter.controllers', [])
                 }
                 else {
                     $scope.searchResults = resp.data;
+                    window.localStorage['searchResults'] = JSON.stringify(resp.data);
                 }
 
             }, function (err) {
@@ -169,7 +171,35 @@ angular.module('starter.controllers', [])
     }
 
 })
+.controller('OtherProfileCtrl', function ($scope, $stateParams, $state) {
+    var searchResults = JSON.parse(window.localStorage['searchResults']);
+    var index = -1;
+    for (var i = 0; i < searchResults.length; i++) {
+        if (searchResults[i]._id == $stateParams._id) {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1) {
+        console.log("Error did not find search id");
+        $state.go('sidemenu.tab.search');
+    }
+
+    window.localStorage['viewData'] = JSON.stringify(searchResults[index]);
+    $scope.name = searchResults[index].firstName + " " + searchResults[index].lastName;
+    $scope.nfollowers = searchResults[index].followers.length;
+
+
+    if (searchResults[index].following.length) {
+        $scope.nfollowing = searchResults[index].following.length;
+    }
+    else {
+        $scope.nfollowing = 0;
+    }
+})
+
 .controller('SelfProfileCtrl', function ($scope) {
+    window.localStorage['viewData'] = window.localStorage['selfData'];
     var selfData = JSON.parse(window.localStorage['selfData']);
     //console.log('selfData', selfData);
     $scope.name = selfData.firstName + " " + selfData.lastName;
@@ -186,15 +216,15 @@ angular.module('starter.controllers', [])
     
 })
 .controller('TabPostsCtrl', function ($scope) {
-    var selfData = JSON.parse(window.localStorage['selfData']);
+    var selfData = JSON.parse(window.localStorage['viewData']);
 })
 .controller('TabFollowingCtrl', function ($scope) {
-    var selfData = JSON.parse(window.localStorage['selfData']);
+    var selfData = JSON.parse(window.localStorage['viewData']);
     $scope.following = selfData.following;
     console.log("following", $scope.following);
 })
 .controller('TabFollowersCtrl', function ($scope) {
-    var selfData = JSON.parse(window.localStorage['selfData']);
+    var selfData = JSON.parse(window.localStorage['viewData']);
     $scope.followers = selfData.followers;
     console.log("followers", selfData.followers);
 })
