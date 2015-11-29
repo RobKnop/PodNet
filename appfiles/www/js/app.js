@@ -107,6 +107,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  
   .state('sidemenu.tab.search', {
       url: '/search',
       views: {
@@ -116,7 +117,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
-   
+  .state('sidemenu.tab.selfprofile', {
+      url: '/selfprofile',
+      views: {
+          'selfprofile': {
+              templateUrl: 'templates/selfprofile.html',
+              controller: 'SelfProfileCtrl'
+          }
+      }
+  })
+  .state('sidemenu.tab.selfprofile.posts', {
+      url: '/tabposts',
+      views: {
+          'tabposts': {
+              templateUrl: 'templates/tabposts.html',
+              controller: 'TabPostsCtrl'
+          }
+      }
+  })
+  .state('sidemenu.tab.selfprofile.followers', {
+      url: '/tabfollowers',
+      views: {
+          'tabfollowers': {
+              templateUrl: 'templates/tabfollowers.html',
+              controller: 'TabFollowersCtrl'
+          }
+      }
+  })
+  .state('sidemenu.tab.selfprofile.following', {
+      url: '/tabfollowing',
+      views: {
+          'tabfollowing': {
+              templateUrl: 'templates/tabfollowing.html',
+              controller: 'TabFollowingCtrl'
+          }
+      }
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');

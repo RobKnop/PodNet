@@ -8,14 +8,13 @@
     })
 })*/
 angular.module('starter.controllers', [])
-.controller('LoginCtrl', function ($scope, $state, $http, $ionicPopup)
-{
+.controller('LoginCtrl', function ($scope, $state, $http, $ionicPopup) {
     $scope.signIn = function (user) {
-        console.log('Sign-In', user);
+        
 
         var getPasswordRequestURL = 'http://54.183.235.161:8080/api/v1/users/';
         getPasswordRequestURL += user.username;
-        
+
 
         $http({
             method: 'GET',
@@ -23,14 +22,16 @@ angular.module('starter.controllers', [])
             data: null,
             headers: { 'Content-Type': 'application/json' }
         }).then(function (resp) {
-            console.log('Success', resp);
+            console.log('Sign in Success', resp);
             if (resp.data.message == 'No user found!') {
                 var alertPopup = $ionicPopup.alert({
                     title: 'Login failed!',
-                    template: 'Username or Password Incorrect'
+                    template: 'Username Incorrect'
                 });
             }
             else {
+                window.localStorage['selfData'] = JSON.stringify(resp.data);
+                
                 $state.go('sidemenu.tab.dash');
             }
 
@@ -52,22 +53,24 @@ angular.module('starter.controllers', [])
             console.error('ERR', err);
 
         });
-        
-        
+
+
     };
     $scope.goToSignUp = function (user) {
         console.log('GoTo Sign-Up', user);
         $state.go('signup');
     };
 })
-.controller('SignUpCtrl', function ($scope, $state,$http, $ionicPopup) {
+.controller('SignUpCtrl', function ($scope, $state, $http, $ionicPopup) {
     $scope.signUp = function (user) {
         console.log('Sign-Up Finished', user);
 
-        var signUpData = { '_id': user.name,
-                           'firstName': user.firstname,
-                           'lastName': user.lastname};
-        
+        var signUpData = {
+            '_id': user.name,
+            'firstName': user.firstname,
+            'lastName': user.lastname
+        };
+
         $http({
             method: 'POST',
             url: 'http://54.183.235.161:8080/api/v1/signup',
@@ -140,7 +143,7 @@ angular.module('starter.controllers', [])
                 headers: { 'Content-Type': 'application/json' }
             }).then(function (resp) {
                 console.log('Success', resp);
-                
+
                 if (resp.data.message == 'No user found!') {
                     $scope.searchResults = [{
                         '_id': 'No results found',
@@ -151,19 +154,50 @@ angular.module('starter.controllers', [])
                 else {
                     $scope.searchResults = resp.data;
                 }
-                
+
             }, function (err) {
                 $scope.searchResults = [{
                     '_id': 'No results found',
                     'firstName': '',
                     'lastName': ''
                 }];
-                
+
             });
-            
+
             //$scope.$apply(function () { $scope.searchResults = searchResults; });
         }
     }
 
 })
+.controller('SelfProfileCtrl', function ($scope) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+    //console.log('selfData', selfData);
+    $scope.name = selfData.firstName + " " + selfData.lastName;
+    $scope.nfollowers = selfData.followers.length;
+    
+    
+    if (selfData.following.length) {
+        $scope.nfollowing = selfData.following.length;
+    }
+    else {
+        $scope.nfollowing = 0;
+    }
+
+    
+})
+.controller('TabPostsCtrl', function ($scope) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+})
+.controller('TabFollowingCtrl', function ($scope) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+    $scope.following = selfData.following;
+    console.log("following", $scope.following);
+})
+.controller('TabFollowersCtrl', function ($scope) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+    $scope.followers = selfData.followers;
+    console.log("followers", selfData.followers);
+})
+
+
 ;

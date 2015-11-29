@@ -1,0 +1,20 @@
+﻿<ion-view view-title="Search">
+    <ion-content>
+        <div id="search-bar">
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper" id="search-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="text" placeholder="Search" ng-model="query" ng-change="search(query)">
+                </label>
+            </div>
+        </div>
+
+        <ion-list>
+            <ion-item ng-repeat="sr in searchResults" type="item-text-wrap">
+                <h2>{{sr._id}}</h2>
+                <p>{{sr.firstName}} {{sr.lastName}}</p>
+
+            </ion-item>
+        </ion-list>
+   </ion-content>
+</ion-view>
