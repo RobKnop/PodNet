@@ -171,7 +171,7 @@ angular.module('starter.controllers', [])
     }
 
 })
-.controller('OtherProfileCtrl', function ($scope, $stateParams, $state) {
+.controller('OtherProfileCtrl', function ($scope, $stateParams, $state, $http, $ionicPopup) {
     var searchResults = JSON.parse(window.localStorage['searchResults']);
     var index = -1;
     for (var i = 0; i < searchResults.length; i++) {
@@ -196,6 +196,68 @@ angular.module('starter.controllers', [])
     else {
         $scope.nfollowing = 0;
     }
+
+
+    $scope.follow = function () {
+        var selfData = JSON.parse(window.localStorage['selfData']);
+        var otherData = JSON.parse(window.localStorage['viewData']);
+
+        var followRequestURL = 'http://54.183.235.161:8080/api/v1/addfollower?current=';
+        followRequestURL += selfData._id + "&newFollower=" + otherData._id;
+
+
+        $http({
+            method: 'GET',
+            url: followRequestURL,
+            data: null,
+            headers: { 'Content-Type': 'application/json' }
+        }).then(function (resp) {
+            console.log('Follow Request Success', resp);
+            if (resp.data.message.indexOf('successfully') > -1) {
+                var alertString = 'You are now following ' + otherData._id;
+                var alertPopup = $ionicPopup.alert({
+                    title: alertString
+                });
+
+                var getPasswordRequestURL = 'http://54.183.235.161:8080/api/v1/users/';
+                getPasswordRequestURL += selfData._id;
+
+
+                $http({
+                    method: 'GET',
+                    url: getPasswordRequestURL,
+                    data: null,
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(function (resp) {
+                    console.log('Update self profile', resp);
+                    if (resp.data.message == 'No user found!') {
+                    }
+                    else {
+                        window.localStorage['selfData'] = JSON.stringify(resp.data);
+                    }
+                }, function (err) {
+                    console.error('ERR', err);
+                });
+
+
+            }
+            else {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Follow Failed',
+                    template: resp.data.message
+                });
+            }
+
+        }, function (err) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Follow Failed'
+            });
+            console.error('ERR', err);
+
+        });
+
+
+    };
 })
 
 .controller('SelfProfileCtrl', function ($scope) {

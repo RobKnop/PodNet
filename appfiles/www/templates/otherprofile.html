@@ -4,21 +4,23 @@
         <p>Description of podcasts I listen to or post</p>
         <p>{{nfollowers}} followers, following {{nfollowing}}</p>
 
-
+        <button class="button button-block button-positive" ng-click="follow()">
+            Follow
+        </button>
 
         <div class="tabContainer">
             <ion-tabs class="tabs-striped tabs-top">
 
-                <ion-tab title="Posts" ui-sref="sidemenu.tab.selfprofile.posts">
-                    <ion-nav-view name="tabposts"></ion-nav-view>
+                <ion-tab title="Posts" ui-sref="sidemenu.tab.otherprofile.posts">
+                    <ion-nav-view name="tabotherposts"></ion-nav-view>
                 </ion-tab>
 
-                <ion-tab title="Followers" ui-sref="sidemenu.tab.selfprofile.followers">
-                    <ion-nav-view name="tabfollowers"></ion-nav-view>
+                <ion-tab title="Followers" ui-sref="sidemenu.tab.otherprofile.followers">
+                    <ion-nav-view name="tabotherfollowers"></ion-nav-view>
                 </ion-tab>
 
-                <ion-tab title="Following" ui-sref="sidemenu.tab.selfprofile.following">
-                    <ion-nav-view name="tabfollowing"></ion-nav-view>
+                <ion-tab title="Following" ui-sref="sidemenu.tab.otherprofile.following">
+                    <ion-nav-view name="tabotherfollowing"></ion-nav-view>
                 </ion-tab>
             </ion-tabs>
         </div>
