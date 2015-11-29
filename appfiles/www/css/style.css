@@ -53,8 +53,6 @@ input::-webkit-input-placeholder {
   text-align: center;
 }
 .tabContainer{
-    padding-top:50px;
-    max-height:60%;
-    position:relative;
-    
+    min-height:300px;
+    position:relative; 
 }

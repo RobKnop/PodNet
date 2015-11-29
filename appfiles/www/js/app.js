@@ -131,6 +131,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
           'tabposts': {
               templateUrl: 'templates/tabposts.html',
+              controller: 'TabPostsCtrl'
           }
       }
   })
@@ -139,6 +140,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
           'tabfollowers': {
               templateUrl: 'templates/tabfollowers.html',
+              controller: 'TabFollowersCtrl'
           }
       }
   })
@@ -147,6 +149,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
           'tabfollowing': {
               templateUrl: 'templates/tabfollowing.html',
+              controller: 'TabFollowingCtrl'
           }
       }
   })

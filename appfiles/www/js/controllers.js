@@ -182,5 +182,22 @@ angular.module('starter.controllers', [])
     else {
         $scope.nfollowing = 0;
     }
+
+    
 })
+.controller('TabPostsCtrl', function ($scope) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+})
+.controller('TabFollowingCtrl', function ($scope) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+    $scope.following = selfData.following;
+    console.log("following", $scope.following);
+})
+.controller('TabFollowersCtrl', function ($scope) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+    $scope.followers = selfData.followers;
+    console.log("followers", selfData.followers);
+})
+
+
 ;
