@@ -10,7 +10,7 @@
         </div>
 
         <ion-list>
-            <ion-item ng-repeat="sr in searchResults" type="item-text-wrap">
+            <ion-item ng-repeat="sr in searchResults" type="item-text-wrap" href="#/sidemenu/tab/otherprofile/{{sr._id}}">
                 <h2>{{sr._id}}</h2>
                 <p>{{sr.firstName}} {{sr.lastName}}</p>
 

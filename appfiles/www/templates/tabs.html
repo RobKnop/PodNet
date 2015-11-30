@@ -7,23 +7,23 @@ navigation history that also transitions its views in and out.
 <ion-tabs class="tabs-icon-top tabs-stable">
 
   <!-- Dashboard Tab -->
-  <ion-tab title="Feed" icon-off="ion-ios-paper" icon-on="ion-ios-paper" href="#/sidemenu/tab/dash">
+  <ion-tab class ="tabColor" title="Feed" icon-off="ion-ios-paper" icon-on="ion-ios-paper" href="#/sidemenu/tab/dash">
     <ion-nav-view name="tab-dash"></ion-nav-view>
   </ion-tab>
 
   <!-- Chats Tab -->
-  <ion-tab title="Profile" icon-off="ion-person" icon-on="ion-person" href="#/sidemenu/tab/selfprofile">
+  <ion-tab class ="tabColor" title="Profile" icon-off="ion-person" icon-on="ion-person" href="#/sidemenu/tab/selfprofile">
     <ion-nav-view name="selfprofile"></ion-nav-view>
   </ion-tab>
 
-  <!-- Account Tab -->
-  <ion-tab title="Following" icon-off="ion-person-stalker" icon-on="ion-person-stalker" href="#/sidemenu/tab/account">
-    <ion-nav-view name="tab-account"></ion-nav-view>
+  <!-- Search Tab -->
+  <ion-tab class ="tabColor" title="Search" icon-off="ion-ios-search" icon-on="ion-search" ui-sref="sidemenu.tab.search">
+    <ion-nav-view name="search"></ion-nav-view>
   </ion-tab>
 
-  <ion-tab href="#/sidemenu/tab/search" hidden="true">
-    <ion-nav-view name="search"></ion-nav-view>
-  </ion-tab>  
+    <ion-tab title="OtherProfile" hidden ="true">
+        <ion-nav-view name="otherprofile"></ion-nav-view>
+    </ion-tab>
     
 
 </ion-tabs>

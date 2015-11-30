@@ -1,0 +1,9 @@
+﻿<ion-view view-title="tabfollowing">
+    <ion-content class="has-tabs-top has-subheader">
+        <ion-list>
+            <ion-item ng-repeat="f in followers track by $index" item="f" type="item-text-wrap">
+                <h2>{{f}}</h2>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
