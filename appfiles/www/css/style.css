@@ -10,28 +10,28 @@ body{
     top:30px;
 }
 .background, .background .pane {
-    background-color: #B2DFDB;
+    background-color: #CFD8DC;
 }
 input::-webkit-input-placeholder {
     color: darkslategray;
    
 }
 .background .item-complex .item-content , .background .item{
-    background-color: #E0F2F1;
+    background-color: #ECEFF1;
     border: 1px solid #00695C;
 }
 
 .background .button{
-    background-color: #80CBC4;
+    background-color: #B0BEC5;
     color: black;
     font-weight: 800;
-    border: 3px solid #00695C;
+    border: 2px solid #546E7A;
 }
 .topbar{
-    background-color:#004D40;
+    background-color:#455A64;
 }
 .sidemenubar{
-     background-color:#00796B;
+     background-color:#78909C;
 }
 .title{
     color:white;
@@ -55,4 +55,7 @@ input::-webkit-input-placeholder {
 .tabContainer{
     min-height:300px;
     position:relative; 
+}
+.tabColor{
+    background-color:#78909C;
 }
