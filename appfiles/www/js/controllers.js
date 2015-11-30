@@ -292,5 +292,36 @@ angular.module('starter.controllers', [])
     console.log("followers", selfData.followers);
 })
 
+.controller('UploadCtrl', function ($scope) {
+    $scope.getPodcastFile = function () {
+        window.plugins.mediapicker.getAudio(function onSuccess() { }, function onError(error) { }, 'false', 'true');
+    };
+    $scope.plsuccess = function(data) {
+        console.log("Data = "+JSON.stringify(data));
+
+    }
+    
+
+    
+
+
+    function delError(e) {
+        console.log(JSON.stringify(e));
+    }
+
+    // onSuccess Callback
+    //
+    function onSuccess() {
+        console.log("playAudio():Audio Success");
+    }
+
+    // onError Callback
+    //
+    function onError(error) {
+        alert('code: ' + error.code + '\n' +
+              'message: ' + error.message + '\n');
+    }
+})
+
 
 ;
