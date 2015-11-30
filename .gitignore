@@ -292,3 +292,5 @@ FakesAssemblies/
 _Pvt_Extensions
 
 testMongoDB.js
+/test
+/serverfiles/uploads

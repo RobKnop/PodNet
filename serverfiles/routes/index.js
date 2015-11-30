@@ -3,7 +3,17 @@ var MongoClient = require('mongodb').MongoClient;
 
 // create application/json parser
 var bodyParser = require('body-parser');
-var jsonParser = bodyParser.json();
+var jsonParser = bodyParser.json({limit : 16000000});
+var multer  = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '/home/ubuntu/PodNet/uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+});
+var upload = multer({storage: storage });
 
 module.exports = function (app) {
 
@@ -144,5 +154,27 @@ module.exports = function (app) {
                 }
             });
         });
+    });
+
+    app.post('/api/v1/podcasts/upload', upload.single('podcast'), function (req, res) {
+        console.log(req.file);
+        console.log(req.body);
+
+        res.send(200, "Podcast uploaded:");     // your JSON
+        /*MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection("podcasts").insert(req.body, function (err) {
+                if (err) {
+                    throw err;
+                } else {
+                    console.log("Podcast uploaded: ");
+                    console.log(req.body);
+                    res.send({"message": "Podcast uploaded"});    // echo the result back
+                    db.close();
+                }
+            });
+        });*/
     });
 };
