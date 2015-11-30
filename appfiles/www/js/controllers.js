@@ -10,9 +10,10 @@
 angular.module('starter.controllers', [])
 .controller('LoginCtrl', function ($scope, $state, $http, $ionicPopup) {
     //remove windowlocalstorage so can't use last login
-    $scope.signIn = function (user) {
-        
 
+    window.localStorage['selfData'] = null;
+
+    $scope.signIn = function (user) {
         var getPasswordRequestURL = 'http://54.183.235.161:8080/api/v1/users/';
         getPasswordRequestURL += user.username;
 
