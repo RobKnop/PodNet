@@ -1,20 +1,6 @@
 'use strict';
 var MongoClient = require('mongodb').MongoClient;
 
-// create application/json parser
-var bodyParser = require('body-parser');
-var jsonParser = bodyParser.json({limit : 16000000});
-var multer  = require('multer');
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '/home/ubuntu/PodNet/uploads')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    }
-});
-var upload = multer({storage: storage });
-
 module.exports = function (app) {
 
     app.get('/api/v1/users/:id', function (req, res) {
@@ -82,7 +68,7 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/api/v1/signup', jsonParser, function (req, res) {
+    app.post('/api/v1/signup', function (req, res) {
         if (!req.body) return res.sendStatus(400);
         console.log("POST user: ");
         req.body.createdOn = new Date();
@@ -156,7 +142,7 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/api/v1/podcasts/upload', upload.single('podcast'), function (req, res) {
+    app.post('/api/v1/podcasts/upload', app.locals.upload.single('podcast'), function (req, res) {
         console.log(req.file);
         console.log(req.body);
 
