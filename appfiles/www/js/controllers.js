@@ -293,6 +293,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('UploadCtrl', function ($scope) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+    $scope.ownerName = selfData._id;
     $scope.getPodcastFile = function () {
         window.plugins.mediapicker.getAudio(function onSuccess() { }, function onError(error) { }, 'false', 'true');
     };
@@ -300,20 +302,10 @@ angular.module('starter.controllers', [])
         console.log("Data = "+JSON.stringify(data));
 
     }
-    
-
-    
-
-
     function delError(e) {
         console.log(JSON.stringify(e));
     }
 
-    // onSuccess Callback
-    //
-    function onSuccess() {
-        console.log("playAudio():Audio Success");
-    }
 
     // onError Callback
     //
