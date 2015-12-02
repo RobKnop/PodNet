@@ -1,7 +1,35 @@
 ﻿<ion-view view-title="Upload Podcast">
     <ion-content>
-        <button class="button button-block button-positive" ng-click="getPodcastFile()">
+        <form action="http://54.183.235.161:8080/api/v1/podcasts/upload" method="post" enctype="multipart/form-data" target="hiddenFrame">
+            <label class="item item-input">
+                <input type="text" placeholder="Title of Podcast" name = "title">
+            </label>
+
+            <label class="item item-input">
+                <input type="text" placeholder="Podcast Topic" name="topic">
+            </label>
+            
+            <label class="item item-input">
+                <input type="text" placeholder="Podcast Description" name="description">
+            </label>
+            
+            <label class="item item-input">
+                <input type="text" placeholder={{ownerName}} name="owner">
+            </label>
+            
+            <br />
+            <input type="file" name='podcast' placeholder="Select file" />
+            <br />
+            <button class="button button-block button-positive" type="submit">
+                Upload
+            </button>
+            
+        </form>
+
+        <iframe name="hiddenFrame"></iframe>
+
+        <!--<button class="button button-block button-positive" ng-click="getPodcastFile()">
             Get Podcast From Music Library
-        </button>
+        </button>-->
     </ion-content>
 </ion-view>
