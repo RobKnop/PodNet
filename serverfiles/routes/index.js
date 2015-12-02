@@ -174,6 +174,15 @@ module.exports = function (app) {
                 }
             });
         });
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            db.collection("users").update({_id: podJson.owner}, {$addToSet: {"publishedPodcasts": podJson.topic}}, function (err) {
+                if (err) {
+                    throw err;
+                }
+                console.log("Add podcast "+ podJson.topic + " to publishedPodcasts of " + podJson.owner);
+            })
+
+        });
 
     });
 };
