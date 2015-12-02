@@ -195,9 +195,11 @@ module.exports = function (app) {
     });
 
     app.post('/api/v1/podcasts/upload', app.locals.upload.single('podcast'), function (req, res) {
+        //noinspection JSUnresolvedVariable
         console.log(req.file);
         console.log(req.body);
 
+        //noinspection JSUnresolvedVariable
         var podJson = {
             "title": req.body.title,
             "topic": req.body.topic,
