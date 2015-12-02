@@ -51,6 +51,58 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/api/v1/podcasts/search/:query', function (req, res) {
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection("podcasts").find({
+                $or: [
+                    {title: req.params.query},
+                    {topic: req.params.query},
+                    {fileName: req.params.query},
+                    {owner : req.params.query}
+                ]
+            }).limit(20).toArray(function (err, requestedPodcast) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedPodcast.length <= 0) {
+                    res.send({message: "No Podcast episode found!"});
+                } else {
+                    console.log("Search result: ");
+                    console.log(requestedPodcast);
+                    res.send(requestedPodcast);
+                }
+                db.close();
+            });
+        });
+    });
+    app.get('/api/v1/podcasts/series/:query', function (req, res) {
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection("podcasts").find({
+                $or: [
+                    {topic: req.params.query}
+                ]
+            }).limit(50).toArray(function (err, requestedSeries) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedSeries.length <= 0) {
+                    res.send({message: "No Podcast series found!"});
+                } else {
+                    console.log("Series array send: ");
+                    console.log(requestedSeries);
+                    res.send(requestedSeries);
+                }
+                db.close();
+            });
+        });
+    });
+
     app.get('/api/v1/users', function (req, res) {
         MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
             if (err) {
