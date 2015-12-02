@@ -175,29 +175,69 @@ angular.module('starter.controllers', [])
 .controller('OtherProfileCtrl', function ($scope, $stateParams, $state, $http, $ionicPopup) {
     var searchResults = JSON.parse(window.localStorage['searchResults']);
     var index = -1;
-    for (var i = 0; i < searchResults.length; i++) {
-        if (searchResults[i]._id == $stateParams._id) {
-            index = i;
-            break;
+    if (searchResults) {
+        for (var i = 0; i < searchResults.length; i++) {
+            if (searchResults[i]._id == $stateParams._id) {
+                index = i;
+                break;
+            }
         }
     }
     if (index == -1) {
         console.log("Error did not find search id");
-        $state.go('sidemenu.tab.search');
-    }
 
-    window.localStorage['viewData'] = JSON.stringify(searchResults[index]);
-    $scope.name = searchResults[index].firstName + " " + searchResults[index].lastName;
-    $scope.nfollowers = searchResults[index].followers.length;
+        //try get request
+        var getUserURL = 'http://54.183.235.161:8080/api/v1/users/';
+        getUserURL += $stateParams._id;
 
 
-    if (searchResults[index].following.length) {
-        $scope.nfollowing = searchResults[index].following.length;
+        $http({
+            method: 'GET',
+            url: getUserURL,
+            data: null,
+            headers: { 'Content-Type': 'application/json' }
+        }).then(function (resp) {
+            console.log('Find User Success', resp);
+            if (resp.data.message == 'No user found!') {
+                $state.go('sidemenu.tab.selfprofile');
+            }
+            else {
+                window.localStorage['viewData'] = JSON.stringify(resp.data);
+                $scope.name = resp.data.firstName + " " + resp.data.lastName;
+                $scope.nfollowers = resp.data.followers.length;
+
+
+                if (resp.data.following.length) {
+                    $scope.nfollowing = resp.data.following.length;
+                }
+                else {
+                    $scope.nfollowing = 0;
+                }
+            }
+
+
+        }, function (err) {
+
+            console.error('ERR', err);
+            $state.go('sidemenu.tab.selfprofile');
+        });
+
+        //$state.go('sidemenu.tab.search');
     }
     else {
-        $scope.nfollowing = 0;
-    }
+        window.localStorage['viewData'] = JSON.stringify(searchResults[index]);
 
+        $scope.name = searchResults[index].firstName + " " + searchResults[index].lastName;
+        $scope.nfollowers = searchResults[index].followers.length;
+
+
+        if (searchResults[index].following.length) {
+            $scope.nfollowing = searchResults[index].following.length;
+        }
+        else {
+            $scope.nfollowing = 0;
+        }
+    }
 
     $scope.follow = function () {
         var selfData = JSON.parse(window.localStorage['selfData']);
@@ -263,6 +303,7 @@ angular.module('starter.controllers', [])
 
 .controller('SelfProfileCtrl', function ($scope) {
     window.localStorage['viewData'] = window.localStorage['selfData'];
+    window.localStorage['searchResults'] = null;
     var selfData = JSON.parse(window.localStorage['selfData']);
     //console.log('selfData', selfData);
     $scope.name = selfData.firstName + " " + selfData.lastName;
@@ -293,7 +334,9 @@ angular.module('starter.controllers', [])
 })
 
 .controller('UploadCtrl', function ($scope, $state) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
     
+    $scope.ownerName = selfData._id;
 })
 
 

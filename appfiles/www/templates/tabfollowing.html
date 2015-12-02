@@ -1,7 +1,7 @@
 ﻿<ion-view view-title="tabfollowing">
     <ion-content class="has-tabs-top has-subheader">
         <ion-list>
-            <ion-item ng-repeat="fg in following track by $index" type="item-text-wrap">
+            <ion-item ng-repeat="fg in following track by $index" type="item-text-wrap" href="#/sidemenu/tab/otherprofile/{{fg}}">
                 <h2>{{fg}}</h2>
             </ion-item>
         </ion-list>
