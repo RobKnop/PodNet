@@ -1,8 +1,11 @@
 'use strict';
 var express = require('express');
 var bodyParser = require('body-parser');
+var middleware = require('./middleware');
 var routes = require('./routes');
 var app = express();
+
+middleware(app);
 routes(app);
 
 app.get('/', function (req, res) {

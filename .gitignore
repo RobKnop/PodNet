@@ -213,7 +213,7 @@ publish/
 *.[Pp]ublish.xml
 *.azurePubxml
 # but database connection strings (with potential passwords) will be unencrypted
-/serverfiles/testJSON.json
+/test/testJSON.json
 *.pubxml
 *.publishproj
 
@@ -291,4 +291,6 @@ FakesAssemblies/
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
 
-testMongoDB.js
+test/testMongoDB.js
+/test
+/serverfiles/uploads
