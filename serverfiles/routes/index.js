@@ -146,21 +146,34 @@ module.exports = function (app) {
         console.log(req.file);
         console.log(req.body);
 
-        res.send(200, "Podcast uploaded:");     // your JSON
-        /*MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+        var podJson = {
+            "title": req.body.title,
+            "topic": req.body.topic,
+            "fileName": req.file.filename,
+            "path": req.file.path,
+            "description": req.body.description,
+            "uploadedON": new Date(),
+            "owner": req.body.owner,
+            "metaData": {
+                "size": req.file.size,
+                "mimetype": req.file.mimetype
+            }
+        };
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
             if (err) {
                 throw err;
             }
-            db.collection("podcasts").insert(req.body, function (err) {
+            db.collection("podcasts").insert(podJson, function (err) {
                 if (err) {
                     throw err;
                 } else {
                     console.log("Podcast uploaded: ");
-                    console.log(req.body);
-                    res.send({"message": "Podcast uploaded"});    // echo the result back
+                    console.log(podJson);
+                    res.send("Podcast successfully uploaded");
                     db.close();
                 }
             });
-        });*/
+        });
+
     });
 };
