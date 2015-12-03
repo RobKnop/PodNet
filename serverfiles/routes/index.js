@@ -61,7 +61,7 @@ module.exports = function (app) {
                     {title: req.params.query},
                     {topic: req.params.query},
                     {fileName: req.params.query},
-                    {owner : req.params.query}
+                    {owner: req.params.query}
                 ]
             }).limit(20).toArray(function (err, requestedPodcast) {
                 if (err) {
@@ -233,10 +233,36 @@ module.exports = function (app) {
                 if (err) {
                     throw err;
                 }
-                console.log("Add podcast "+ podJson.topic + " to publishedPodcasts of " + podJson.owner);
+                console.log("Add podcast " + podJson.topic + " to publishedPodcasts of " + podJson.owner);
             })
-
         });
+    });
 
+    app.get('/api/v1/podcasts/:id', function (req, res) {
+
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+
+            var ObjectID = require('mongodb').ObjectID;
+            var o_id = new ObjectID(req.params.id);
+
+            db.collection("podcasts").findOne({_id: o_id}, function (err, requestedUser) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedUser) {
+                    console.log("GET single podcast: ");
+                    console.log(requestedUser);
+
+
+                    res.download(requestedUser.path);
+                } else {
+                    res.send({message: "No podcast found!"});
+                }
+                db.close();
+            });
+        });
     });
 };
