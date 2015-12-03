@@ -190,6 +190,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+  .state('sidemenu.tab.upload', {
+      url: '/upload',
+      views: {
+          'upload': {
+              templateUrl: 'templates/upload.html',
+              controller: 'UploadCtrl'
+          }
+      }
+  })
+  .state('sidemenu.tab.podcastsearch', {
+      url: '/podcastsearch',
+      views: {
+          'podcastsearch': {
+              templateUrl: 'templates/podcastsearch.html',
+              controller: 'PodcastSearchCtrl'
+          }
+      }
+  })
+     
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
 
