@@ -105,7 +105,26 @@ angular.module('starter.controllers', [])
         $state.go('login');
     };
 })
-.controller('DashCtrl', function ($scope) { })
+.controller('DashCtrl', function ($scope) {
+    var posts = [
+        {
+            'title': 'Post1',
+            'description' : 'Description 1',
+            'owner' : 'Owner 1'
+        },
+        {
+            'title': 'Post2',
+            'description': 'Description 2',
+            'owner': 'Owner 2'
+        },
+        {
+            'title': 'Post3',
+            'description': 'Description 3',
+            'owner': 'Owner 3'
+        }
+    ];
+    $scope.posts = posts;
+})
 
 .controller('ChatsCtrl', function ($scope, Chats) {
     $scope.chats = Chats.all();
@@ -338,6 +357,37 @@ angular.module('starter.controllers', [])
     
     $scope.ownerName = selfData._id;
 })
+.controller('PodcastSearchCtrl', function ($scope, $state, $http) {
+    var searchResults = null;
+    $scope.search = function (query) {
+        if (query.length > 2) {
+            var searchURL = 'http://54.183.235.161:8080/api/v1/podcasts/search/';
+            searchURL += query;
 
+
+            $http({
+                method: 'GET',
+                url: searchURL,
+                data: null,
+                headers: { 'Content-Type': 'application/json' }
+            }).then(function (resp) {
+                console.log('Success', resp);
+
+                if (resp.data.message == 'No Podcast found!') {
+                    $scope.searchResults = null;
+                }
+                else {
+                    $scope.searchResults = resp.data;
+                    window.localStorage['podcastSearchResults'] = JSON.stringify(resp.data);
+                }
+
+            }, function (err) {
+                $scope.searchResults = null;
+
+            });
+        }
+    }
+
+})
 
 ;
