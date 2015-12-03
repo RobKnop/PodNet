@@ -1,0 +1,20 @@
+﻿<ion-view view-title="Podcast Search">
+    <ion-content>
+        <div id="search-bar">
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper" id="search-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="text" placeholder="Search for Podcast" ng-model="query" ng-change="search(query)">
+                </label>
+            </div>
+        </div>
+
+        <ion-list>
+            <ion-item ng-repeat="psr in searchResults" type="item-text-wrap" href="">
+                <h2><b>{{psr.title}}</b> {{psr.owner}}</h2>
+                <p>{{psr.description}}</p>
+
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
