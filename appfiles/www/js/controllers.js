@@ -14,6 +14,7 @@ angular.module('starter.controllers', [])
     window.localStorage['selfData'] = null;
 
     $scope.signIn = function (user) {
+        window.localStorage['selfData'] = null;
         var getPasswordRequestURL = 'http://54.183.235.161:8080/api/v1/users/';
         getPasswordRequestURL += user.username;
 
@@ -33,7 +34,7 @@ angular.module('starter.controllers', [])
             }
             else {
                 window.localStorage['selfData'] = JSON.stringify(resp.data);
-                
+                console.log('selfData Updated');
                 $state.go('sidemenu.tab.dash');
             }
 
