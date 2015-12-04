@@ -159,9 +159,9 @@ module.exports = function (app) {
                 console.log(requestedUser);
                 if (requestedUser) {
 
-                    if (requestedUser.following.indexOf(newFollower) <= 0) {
+                    if (requestedUser.following.indexOf(newFollower) < 0) {
 
-                        db.collection("users").update({_id: newFollower}, {$addToSet: {"follower": currentUser}}, function (err, updatedFollower) {
+                        db.collection("users").update({_id: newFollower}, {$addToSet: {"followers": currentUser}}, function (err, updatedFollower) {
                             if (err) {
                                 throw err;
                             }
@@ -262,6 +262,54 @@ module.exports = function (app) {
                     res.send({message: "No podcast found!"});
                 }
                 db.close();
+            });
+        });
+    });
+
+    app.post('/api/v1/posts/creation', function (req, res) {
+        if (!req.body) return res.sendStatus(400);
+        console.log("User posted: ");
+        req.body.createdOn = new Date();
+        console.log(req.body);      // your JSON
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection("posts").insert(req.body, function (err, insertedPost) {
+                if (err) {
+                    console.log("ERROR: " + err.message);
+                    res.send(err.message);
+                    //throw err;
+                } else {
+                    console.log(insertedPost);
+                    db.collection("users").update(
+                        {following: {$in: [req.body.author]}}, //
+                        {$addToSet: {"newsfeed": insertedPost.ops[0]}},
+                        function (err) {
+                            if (err) {
+                                console.log("ERROR: " + err.message);
+                                res.send(err.message);
+                                //throw err;
+                            } else {
+                                console.log("Newsfeed of followers updated");
+                                db.collection("users").update(
+                                    {_id:  req.body.author}, //
+                                    {$addToSet: {"publishedPosts": insertedPost.ops[0]}},
+                                    function (err) {
+                                        if (err) {
+                                            console.log("ERROR: " + err.message);
+                                            res.send(err.message);
+                                            //throw err;
+                                        } else {
+                                            res.send({message: "Post successfully published"});
+                                            console.log("publishedPost array of author updated");
+                                            db.close();
+
+                                        }
+                                    });
+                            }
+                        });
+                }
             });
         });
     });
