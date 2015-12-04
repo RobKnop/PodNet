@@ -1,14 +1,18 @@
 <ion-view view-title="Podcast Feed"> 
-    <ion-content class="padding">
+    <ion-content>
         <ion-list>
-            <ion-item ng-repeat="ps in posts" type="item-text-wrap" href="">
+            <ion-item ng-repeat="ps in posts" type="item-text-wrap">
 
-                    <div class="item item-divider"><b>{{ps.title}}</b></div>
-                    <div class="item item-divider">{{ps.owner}}</div>
+                <h2><b>{{ps.author}} : {{ps.podcast.title}}</b></h2>
                     <div class="item item-body">
-                            {{ps.description}}
+                        {{ps.comment}}
+                        
                     </div>
-
+                <div data-tap-disabled="true">
+                    <audio id="{{ps._id}}" controls>
+                        <source src="{{ps.audiosrc}}" type="audio/mpeg">
+                    </audio>
+                </div>
             </ion-item>
         </ion-list>
 
