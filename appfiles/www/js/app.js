@@ -38,13 +38,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // setup an abstract state for the tabs directive
+  // setup an abstract state for the sidemenu directive
       .state('sidemenu', {
           url: "/sidemenu",
           abstract: true,
           templateUrl: "templates/sidemenu.html"
       })
 
+  // setup an abstract state for the tabs directive
     .state('sidemenu.tab', {
     url: "/tab",
     abstract: true,
@@ -57,20 +58,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
 
   
-   
+   //login view
     .state('login', {
         cache:false,
         url: '/login',
         templateUrl: 'templates/tab-login.html',
         controller: 'LoginCtrl'
     })
+
+   //signup view
     .state('signup', {
         cache: false,
         url: '/signup',
         templateUrl: 'templates/signup.html',
         controller: 'SignUpCtrl'
     })
-    // Each tab has its own nav history stack:
+
+    // landing page after login
   .state('sidemenu.tab.dash', {
     cache: false,
     url: '/dash',
@@ -82,7 +86,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
-  
+  //search for people to follow
   .state('sidemenu.tab.search', {
       cache: false,
       url: '/search',
@@ -93,6 +97,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+
+   //view own profile
   .state('sidemenu.tab.selfprofile', {
       cache: false,
       url: '/selfprofile',
@@ -103,6 +109,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+
+  //view posts
   .state('sidemenu.tab.selfprofile.posts', {
       cache: false,
       url: '/tabposts',
@@ -113,6 +121,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+
+  //view people that follow you
   .state('sidemenu.tab.selfprofile.followers', {
       cache: false,
       url: '/tabfollowers',
@@ -123,6 +133,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+
+  //view people that you follow
   .state('sidemenu.tab.selfprofile.following', {
       cache: false,
       url: '/tabfollowing',
@@ -133,6 +145,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+
+  //view other person's profile
   .state('sidemenu.tab.otherprofile', {
       cache: false,
       url: '/otherprofile/:_id',
@@ -143,7 +157,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
-
+  
+  //view other person's post
   .state('sidemenu.tab.otherprofile.posts', {
       cache: false,
       url: '/tabotherposts',
@@ -154,6 +169,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+
+  //view other person's followers
   .state('sidemenu.tab.otherprofile.followers', {
       cache: false,
       url: '/tabotherfollowers',
@@ -164,6 +181,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+  
+  //view other person's following
   .state('sidemenu.tab.otherprofile.following', {
       cache: false,
       url: '/tabotherfollowing',
@@ -174,6 +193,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+
+  //upload podcast
   .state('sidemenu.tab.upload', {
       cache: false,
       url: '/upload',
@@ -184,6 +205,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+
+  //search for podcast
   .state('sidemenu.tab.podcastsearch', {
       cache: false,
       url: '/podcastsearch',
@@ -191,6 +214,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           'podcastsearch': {
               templateUrl: 'templates/podcastsearch.html',
               controller: 'PodcastSearchCtrl'
+          }
+      }
+  })
+
+    //create new podcast
+  .state('sidemenu.tab.newpost', {
+      cache: false,
+      url: '/newpost',
+      views: {
+          'newpost': {
+              templateUrl: 'templates/newpost.html',
+              controller: 'NewPostCtrl'
           }
       }
   })

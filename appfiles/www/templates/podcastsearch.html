@@ -19,7 +19,7 @@
         </div>
         
         <ion-list>
-            <ion-item ng-repeat="psr in searchResults" type="item-text-wrap" ng-click="playFile(psr._id)">
+            <ion-item ng-repeat="psr in searchResults" type="item-text-wrap" ng-click="selectPodcast(psr)">
                 <h2><b>{{psr.title}}</b> {{psr.owner}}</h2>
                 <p>{{psr.description}}</p>
 

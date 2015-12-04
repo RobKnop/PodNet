@@ -1,54 +1,38 @@
-/*.controller('MainCtrl', function($scope, $http) {
-    $http.get('https://cors-test.appspot.com/test').then(function(resp) {
-        console.log('Success', resp);
-        // For JSON responses, resp.data contains the result
-    }, function(err) {
-        console.error('ERR', err);
-        // err.status will contain the status code
-    })
-})*/
 angular.module('starter.controllers', [])
+//login controller
 .controller('LoginCtrl', function ($scope, $state, $http, $ionicPopup) {
     //remove windowlocalstorage so can't use last login
-
     window.localStorage['selfData'] = null;
 
+    //when user signs in
     $scope.signIn = function (user) {
         window.localStorage['selfData'] = null;
-        var getPasswordRequestURL = 'http://54.183.235.161:8080/api/v1/users/';
-        getPasswordRequestURL += user.username;
+        var getSignInURL = 'http://54.183.235.161:8080/api/v1/users/';
+        getSignInURL += user.username;
 
 
         $http({
             method: 'GET',
-            url: getPasswordRequestURL,
+            url: getSignInURL,
             data: null,
             headers: { 'Content-Type': 'application/json' }
         }).then(function (resp) {
             console.log('Sign in Success', resp);
             if (resp.data.message == 'No user found!') {
+                //signin failed
                 var alertPopup = $ionicPopup.alert({
                     title: 'Login failed!',
                     template: 'Username Incorrect'
                 });
             }
             else {
+                //sign in succeeded
                 window.localStorage['selfData'] = JSON.stringify(resp.data);
                 console.log('selfData Updated');
                 $state.go('sidemenu.tab.dash');
             }
-
-            /*if (user.password == resp.data.firstName) {
-                $state.go('sidemenu.tab.dash');
-            }
-            else {
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Login failed!',
-                    template: 'Username or Password Incorrect'
-                });
-            }*/
-
         }, function (err) {
+            //get request failed
             var alertPopup = $ionicPopup.alert({
                 title: 'Login failed!',
                 template: 'Username incorrect or Not Connected to Internet'
@@ -59,15 +43,20 @@ angular.module('starter.controllers', [])
 
 
     };
+
+    //button to signup
     $scope.goToSignUp = function (user) {
         console.log('GoTo Sign-Up', user);
         $state.go('signup');
     };
 })
+
+//signup controller
 .controller('SignUpCtrl', function ($scope, $state, $http, $ionicPopup) {
+    //sign up function
     $scope.signUp = function (user) {
         console.log('Sign-Up Finished', user);
-
+        //load up json user object
         var signUpData = {
             '_id': user.name,
             'firstName': user.firstname,
@@ -111,6 +100,8 @@ angular.module('starter.controllers', [])
         $state.go('login');
     };
 })
+
+//controller for landing page
 .controller('DashCtrl', function ($scope) {
     var posts = [
         {
@@ -411,5 +402,79 @@ angular.module('starter.controllers', [])
     }
 
 })
+.controller('NewPostCtrl', function ($scope, $state, $http, $ionicPopup) {
+    //show uploaded podcasts
+    var selfData = JSON.parse(window.localStorage['selfData']);
+    var searchURL = 'http://54.183.235.161:8080/api/v1/podcasts/search/';
+    searchURL += selfData._id;
 
+
+    $http({
+        method: 'GET',
+        url: searchURL,
+        data: null,
+        headers: { 'Content-Type': 'application/json' }
+    }).then(function (resp) {
+        console.log('Success', resp);
+
+        if (resp.data.message == 'No Podcast found!') {
+            $scope.searchResults = null;
+        }
+        else {
+            $scope.searchResults = resp.data;
+            window.localStorage['podcastSearchResults'] = JSON.stringify(resp.data);
+        }
+
+    }, function (err) {
+        $scope.searchResults = null;
+
+    });
+
+
+    $scope.selectedRow = null;  // initialize our variable to null
+    $scope.setClickedRow = function (index) {  //function that sets the value of selectedRow to current index
+        $scope.selectedRow = index;
+    }
+
+    $scope.createPost = function (comment) {
+        if(!comment || comment == "comment"){
+            var alertPopup = $ionicPopup.alert({
+                title: 'Comment field cannont be empty'
+            });
+            return;
+        }
+        if ($scope.selectedRow == null) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Must Select Podcast'
+            });
+            return;
+        }
+        /*console.log("com", comment);
+        console.log("post", $scope.searchResults[$scope.selectedRow]);*/
+        var postData = {
+            'author': selfData._id,
+            'comment': comment,
+            'podcast': $scope.searchResults[$scope.selectedRow],
+            'likes': 0
+        };
+        
+        $http({
+            method: 'POST',
+            url: 'http://54.183.235.161:8080/api/v1/posts/creation',
+            data: postData,
+            headers: { 'Content-Type': 'application/json' }
+        }).then(function (resp) {
+            console.log('New Post Success', resp); 
+            var alertPopup = $ionicPopup.alert({
+                title: 'New Post Success!' 
+            });
+        }, function (err) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'New Post failed!',
+                template: 'Server Failed or Not Connected to Internet'
+            });
+            console.error('ERR', err);
+        });
+    }
+})
 ;
