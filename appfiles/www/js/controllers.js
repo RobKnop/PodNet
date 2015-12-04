@@ -70,9 +70,13 @@ angular.module('starter.controllers', [])
         var signUpData = {
             '_id': user.name,
             'firstName': user.firstname,
-            'lastName': user.lastname
+            'lastName': user.lastname,
+            'followers' : [],
+            'following' : [],
+            "publishedPodcasts" : [],
+            "newsfeed" : []
         };
-
+        
         $http({
             method: 'POST',
             url: 'http://54.183.235.161:8080/api/v1/signup',
@@ -80,16 +84,17 @@ angular.module('starter.controllers', [])
             headers: { 'Content-Type': 'application/json' }
         }).then(function (resp) {
             console.log('Success', resp);
-
-            if (resp.status == 200) {
-                $state.go('sidemenu.tab.dash');
-            }
-            else {
+            if (resp.data.message.indexOf('ERROR') > -1) {
                 var alertPopup = $ionicPopup.alert({
                     title: 'Sign Up failed!',
-                    template: 'Username or Password Incorrect'
+                    template: 'Username already taken'
                 });
             }
+            else {
+                window.localStorage['selfData'] = JSON.stringify(signUpData);
+                $state.go('sidemenu.tab.dash');
+            }
+            
         }, function (err) {
             var alertPopup = $ionicPopup.alert({
                 title: 'Sign Up failed!',
@@ -324,8 +329,9 @@ angular.module('starter.controllers', [])
     window.localStorage['viewData'] = window.localStorage['selfData'];
     window.localStorage['searchResults'] = null;
     var selfData = JSON.parse(window.localStorage['selfData']);
-    //console.log('selfData', selfData);
+    console.log('selfData', selfData);
     $scope.name = selfData.firstName + " " + selfData.lastName;
+
     $scope.nfollowers = selfData.followers.length;
     
     
@@ -358,6 +364,8 @@ angular.module('starter.controllers', [])
     $scope.ownerName = selfData._id;
 })
 .controller('PodcastSearchCtrl', function ($scope, $state, $http) {
+    $scope.audiosrc = 'http://54.183.235.161:8080/api/v1/podcasts/5660ca3cfd7a0acd76f6c2f0';
+    $scope.hidden = 'false';
     var searchResults = null;
     $scope.search = function (query) {
         if (query.length > 2) {
@@ -386,6 +394,23 @@ angular.module('starter.controllers', [])
 
             });
         }
+    }
+
+    $scope.playFile = function (podID) {
+        var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + podID;
+        var podFile;
+        $http({
+            method: 'GET',
+            url: getPodURL,
+            data: null,
+            headers: { 'Content-Type': 'audio/mpeg' }
+        }).then(function (resp) {
+            console.log('get Podcast File success', resp);
+            
+        }, function (err) {
+            console.log('get Podcast File Fail')
+
+        });
     }
 
 })
