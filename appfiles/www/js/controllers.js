@@ -364,9 +364,11 @@ angular.module('starter.controllers', [])
     
     $scope.ownerName = selfData._id;
 })
-.controller('PodcastSearchCtrl', function ($scope, $state, $http) {
-    $scope.audiosrc = 'http://54.183.235.161:8080/api/v1/podcasts/5660ca3cfd7a0acd76f6c2f0';
-    $scope.hidden = 'false';
+.controller('PodcastSearchCtrl', function ($scope, $state, $http, $sce) {
+    $scope.audiosrc = null;
+    
+    $scope.audiohide = "false";
+    
     var searchResults = null;
     $scope.search = function (query) {
         if (query.length > 2) {
@@ -399,19 +401,13 @@ angular.module('starter.controllers', [])
 
     $scope.playFile = function (podID) {
         var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + podID;
-        var podFile;
-        $http({
-            method: 'GET',
-            url: getPodURL,
-            data: null,
-            headers: { 'Content-Type': 'audio/mpeg' }
-        }).then(function (resp) {
-            console.log('get Podcast File success', resp);
-            
-        }, function (err) {
-            console.log('get Podcast File Fail')
-
-        });
+        $scope.audiosrc = $sce.trustAsResourceUrl(getPodURL);
+        var playme = document.getElementById('podAudio');
+        
+        playme.load();
+        console.log('audio loaded');
+        
+        
     }
 
 })
