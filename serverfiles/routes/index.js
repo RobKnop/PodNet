@@ -266,6 +266,34 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/api/v1/posts/:id', function (req, res) {
+
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+
+            var ObjectID = require('mongodb').ObjectID;
+            var o_id = new ObjectID(req.params.id);
+
+            db.collection("posts").findOne({_id: o_id}, function (err, requestedUser) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedUser) {
+                    console.log("GET single post: ");
+                    console.log(requestedUser);
+
+
+                    res.send(requestedUser);
+                } else {
+                    res.send({message: "No post found!"});
+                }
+                db.close();
+            });
+        });
+    });
+
     app.post('/api/v1/posts/creation', function (req, res) {
         if (!req.body) return res.sendStatus(400);
         console.log("User posted: ");
