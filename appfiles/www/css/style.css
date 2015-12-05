@@ -59,3 +59,9 @@ input::-webkit-input-placeholder {
 .tabColor{
     background-color:#78909C;
 }
+
+
+.selected {
+    background-color:lightcoral !important;
+    font-weight:bold !important;
+}

@@ -1,53 +1,38 @@
-/*.controller('MainCtrl', function($scope, $http) {
-    $http.get('https://cors-test.appspot.com/test').then(function(resp) {
-        console.log('Success', resp);
-        // For JSON responses, resp.data contains the result
-    }, function(err) {
-        console.error('ERR', err);
-        // err.status will contain the status code
-    })
-})*/
 angular.module('starter.controllers', [])
+//login controller
 .controller('LoginCtrl', function ($scope, $state, $http, $ionicPopup) {
     //remove windowlocalstorage so can't use last login
-
     window.localStorage['selfData'] = null;
 
+    //when user signs in
     $scope.signIn = function (user) {
-        var getPasswordRequestURL = 'http://54.183.235.161:8080/api/v1/users/';
-        getPasswordRequestURL += user.username;
+        window.localStorage['selfData'] = null;
+        var getSignInURL = 'http://54.183.235.161:8080/api/v1/users/';
+        getSignInURL += user.username;
 
 
         $http({
             method: 'GET',
-            url: getPasswordRequestURL,
+            url: getSignInURL,
             data: null,
             headers: { 'Content-Type': 'application/json' }
         }).then(function (resp) {
             console.log('Sign in Success', resp);
             if (resp.data.message == 'No user found!') {
+                //signin failed
                 var alertPopup = $ionicPopup.alert({
                     title: 'Login failed!',
                     template: 'Username Incorrect'
                 });
             }
             else {
+                //sign in succeeded
                 window.localStorage['selfData'] = JSON.stringify(resp.data);
-                
+                console.log('selfData Updated');
                 $state.go('sidemenu.tab.dash');
             }
-
-            /*if (user.password == resp.data.firstName) {
-                $state.go('sidemenu.tab.dash');
-            }
-            else {
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Login failed!',
-                    template: 'Username or Password Incorrect'
-                });
-            }*/
-
         }, function (err) {
+            //get request failed
             var alertPopup = $ionicPopup.alert({
                 title: 'Login failed!',
                 template: 'Username incorrect or Not Connected to Internet'
@@ -58,21 +43,30 @@ angular.module('starter.controllers', [])
 
 
     };
+
+    //button to signup
     $scope.goToSignUp = function (user) {
         console.log('GoTo Sign-Up', user);
         $state.go('signup');
     };
 })
+
+//signup controller
 .controller('SignUpCtrl', function ($scope, $state, $http, $ionicPopup) {
+    //sign up function
     $scope.signUp = function (user) {
         console.log('Sign-Up Finished', user);
-
+        //load up json user object
         var signUpData = {
             '_id': user.name,
             'firstName': user.firstname,
-            'lastName': user.lastname
+            'lastName': user.lastname,
+            'followers' : [],
+            'following' : [],
+            "publishedPodcasts" : [],
+            "newsfeed" : []
         };
-
+        
         $http({
             method: 'POST',
             url: 'http://54.183.235.161:8080/api/v1/signup',
@@ -80,16 +74,17 @@ angular.module('starter.controllers', [])
             headers: { 'Content-Type': 'application/json' }
         }).then(function (resp) {
             console.log('Success', resp);
-
-            if (resp.status == 200) {
-                $state.go('sidemenu.tab.dash');
-            }
-            else {
+            if (resp.data.message.indexOf('ERROR') > -1) {
                 var alertPopup = $ionicPopup.alert({
                     title: 'Sign Up failed!',
-                    template: 'Username or Password Incorrect'
+                    template: 'Username already taken'
                 });
             }
+            else {
+                window.localStorage['selfData'] = JSON.stringify(signUpData);
+                $state.go('sidemenu.tab.dash');
+            }
+            
         }, function (err) {
             var alertPopup = $ionicPopup.alert({
                 title: 'Sign Up failed!',
@@ -105,25 +100,49 @@ angular.module('starter.controllers', [])
         $state.go('login');
     };
 })
-.controller('DashCtrl', function ($scope) {
-    var posts = [
-        {
-            'title': 'Post1',
-            'description' : 'Description 1',
-            'owner' : 'Owner 1'
-        },
-        {
-            'title': 'Post2',
-            'description': 'Description 2',
-            'owner': 'Owner 2'
-        },
-        {
-            'title': 'Post3',
-            'description': 'Description 3',
-            'owner': 'Owner 3'
+
+//controller for landing page
+.controller('DashCtrl', function ($scope, $http, $sce) {
+    var selfData = JSON.parse(window.localStorage['selfData']);
+
+    var getSignInURL = 'http://54.183.235.161:8080/api/v1/users/';
+    getSignInURL += selfData._id;
+
+
+    $http({
+        method: 'GET',
+        url: getSignInURL,
+        data: null,
+        headers: { 'Content-Type': 'application/json' }
+    }).then(function (resp) {
+        console.log('Sign in Success', resp);
+        if (resp.data.message == 'No user found!') {
         }
-    ];
-    $scope.posts = posts;
+        else {
+            selfData = JSON.parse(window.localStorage['selfData']);
+            $scope.posts = selfData.newsfeed;
+            $scope.emptyText = "";
+            if ($scope.posts) {
+                for (var i = 0; i < $scope.posts.length; i++) {
+                    var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+                    $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+                }
+                if ($scope.posts.length == 0) {
+                    $scope.emptyText = "No Posts Available. Follow some users to see podcasts!"
+                }
+            }
+            else {
+                $scope.emptyText = "No Posts Available. Follow some users to see podcasts!"
+            }
+        }
+    }, function (err) {
+        //get request failed
+        console.error('ERR', err);
+
+    });
+    
+   
 })
 
 .controller('ChatsCtrl', function ($scope, Chats) {
@@ -191,7 +210,7 @@ angular.module('starter.controllers', [])
     }
 
 })
-.controller('OtherProfileCtrl', function ($scope, $stateParams, $state, $http, $ionicPopup) {
+.controller('OtherProfileCtrl', function ($scope, $stateParams, $state, $http, $sce, $ionicPopup) {
     var searchResults = JSON.parse(window.localStorage['searchResults']);
     var index = -1;
     if (searchResults) {
@@ -221,6 +240,7 @@ angular.module('starter.controllers', [])
                 $state.go('sidemenu.tab.selfprofile');
             }
             else {
+                console.log("otherviewdata", resp.data);
                 window.localStorage['viewData'] = JSON.stringify(resp.data);
                 $scope.name = resp.data.firstName + " " + resp.data.lastName;
                 $scope.nfollowers = resp.data.followers.length;
@@ -231,6 +251,17 @@ angular.module('starter.controllers', [])
                 }
                 else {
                     $scope.nfollowing = 0;
+                }
+
+                var selfData = JSON.parse(window.localStorage['viewData']);
+                $scope.posts = selfData.publishedPosts;
+                console.log("newsfeed", selfData.publishedPosts);
+                if ($scope.posts) {
+                    for (var i = 0; i < $scope.posts.length; i++) {
+                        var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+                        $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+                    }
                 }
             }
 
@@ -256,8 +287,19 @@ angular.module('starter.controllers', [])
         else {
             $scope.nfollowing = 0;
         }
-    }
 
+        var selfData = JSON.parse(window.localStorage['viewData']);
+        $scope.posts = selfData.publishedPosts;
+        console.log("newsfeed", selfData.publishedPosts);
+        if ($scope.posts) {
+            for (var i = 0; i < $scope.posts.length; i++) {
+                var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+                $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+            }
+        }
+    }
+    
     $scope.follow = function () {
         var selfData = JSON.parse(window.localStorage['selfData']);
         var otherData = JSON.parse(window.localStorage['viewData']);
@@ -320,26 +362,74 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('SelfProfileCtrl', function ($scope) {
-    window.localStorage['viewData'] = window.localStorage['selfData'];
-    window.localStorage['searchResults'] = null;
+.controller('SelfProfileCtrl', function ($scope, $http, $sce) {
     var selfData = JSON.parse(window.localStorage['selfData']);
-    //console.log('selfData', selfData);
-    $scope.name = selfData.firstName + " " + selfData.lastName;
-    $scope.nfollowers = selfData.followers.length;
-    
-    
-    if (selfData.following.length) {
-        $scope.nfollowing = selfData.following.length;
-    }
-    else {
-        $scope.nfollowing = 0;
-    }
+
+    var getSignInURL = 'http://54.183.235.161:8080/api/v1/users/';
+    getSignInURL += selfData._id;
+
+
+    $http({
+        method: 'GET',
+        url: getSignInURL,
+        data: null,
+        headers: { 'Content-Type': 'application/json' }
+    }).then(function (resp) {
+        console.log('Sign in Success', resp);
+        if (resp.data.message == 'No user found!') {
+        }
+        else {
+            //sign in succeeded
+            window.localStorage['selfData'] = JSON.stringify(resp.data);
+
+
+            window.localStorage['viewData'] = window.localStorage['selfData'];
+            window.localStorage['searchResults'] = null;
+            selfData = JSON.parse(window.localStorage['selfData']);
+            console.log('selfData', selfData);
+            $scope.name = selfData.firstName + " " + selfData.lastName;
+
+            $scope.nfollowers = selfData.followers.length;
+
+
+            if (selfData.following.length) {
+                $scope.nfollowing = selfData.following.length;
+            }
+            else {
+                $scope.nfollowing = 0;
+            }
+            var selfData = JSON.parse(window.localStorage['viewData']);
+            $scope.posts = selfData.publishedPosts;
+            //console.log("newsfeed", selfData.publishedPosts);
+            if ($scope.posts) {
+                for (var i = 0; i < $scope.posts.length; i++) {
+                    var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+                    $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+                }
+            }
+        }
+    }, function (err) {
+        //get request failed
+        console.error('ERR', err);
+
+    });
+
 
     
+    
 })
-.controller('TabPostsCtrl', function ($scope) {
+.controller('TabPostsCtrl', function ($scope, $http, $sce) {
     var selfData = JSON.parse(window.localStorage['viewData']);
+    $scope.posts = selfData.publishedPosts;
+    console.log("newsfeed", selfData.publishedPosts);
+    if ($scope.posts) {
+        for (var i = 0; i < $scope.posts.length; i++) {
+            var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+            $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+        }
+    }
 })
 .controller('TabFollowingCtrl', function ($scope) {
     var selfData = JSON.parse(window.localStorage['viewData']);
@@ -357,7 +447,11 @@ angular.module('starter.controllers', [])
     
     $scope.ownerName = selfData._id;
 })
-.controller('PodcastSearchCtrl', function ($scope, $state, $http) {
+.controller('PodcastSearchCtrl', function ($scope, $state, $http, $sce) {
+    $scope.audiosrc = null;
+    
+    $scope.audiohide = "false";
+    
     var searchResults = null;
     $scope.search = function (query) {
         if (query.length > 2) {
@@ -388,6 +482,91 @@ angular.module('starter.controllers', [])
         }
     }
 
-})
+    $scope.playFile = function (podID) {
+        var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + podID;
+        $scope.audiosrc = $sce.trustAsResourceUrl(getPodURL);
+        var playme = document.getElementById('podAudio');
+        
+        playme.load();
+        console.log('audio loaded');
+        
+        
+    }
 
+})
+.controller('NewPostCtrl', function ($scope, $state, $http, $ionicPopup) {
+    //show uploaded podcasts
+    var selfData = JSON.parse(window.localStorage['selfData']);
+    var searchURL = 'http://54.183.235.161:8080/api/v1/podcasts/search/';
+    searchURL += selfData._id;
+
+
+    $http({
+        method: 'GET',
+        url: searchURL,
+        data: null,
+        headers: { 'Content-Type': 'application/json' }
+    }).then(function (resp) {
+        console.log('Success', resp);
+
+        if (resp.data.message == 'No Podcast found!') {
+            $scope.searchResults = null;
+        }
+        else {
+            $scope.searchResults = resp.data;
+            window.localStorage['podcastSearchResults'] = JSON.stringify(resp.data);
+        }
+
+    }, function (err) {
+        $scope.searchResults = null;
+
+    });
+
+
+    $scope.selectedRow = null;  // initialize our variable to null
+    $scope.setClickedRow = function (index) {  //function that sets the value of selectedRow to current index
+        $scope.selectedRow = index;
+    }
+
+    $scope.createPost = function (comment) {
+        if(!comment || comment == "comment"){
+            var alertPopup = $ionicPopup.alert({
+                title: 'Comment field cannont be empty'
+            });
+            return;
+        }
+        if ($scope.selectedRow == null) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Must Select Podcast'
+            });
+            return;
+        }
+        /*console.log("com", comment);
+        console.log("post", $scope.searchResults[$scope.selectedRow]);*/
+        var postData = {
+            'author': selfData._id,
+            'comment': comment,
+            'podcast': $scope.searchResults[$scope.selectedRow],
+            'likes': 0
+        };
+        
+        $http({
+            method: 'POST',
+            url: 'http://54.183.235.161:8080/api/v1/posts/creation',
+            data: postData,
+            headers: { 'Content-Type': 'application/json' }
+        }).then(function (resp) {
+            console.log('New Post Success', resp); 
+            var alertPopup = $ionicPopup.alert({
+                title: 'New Post Success!' 
+            });
+        }, function (err) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'New Post failed!',
+                template: 'Server Failed or Not Connected to Internet'
+            });
+            console.error('ERR', err);
+        });
+    }
+})
 ;

@@ -1,19 +1,28 @@
 ﻿<ion-view view-title="View Profile">
     <ion-content class="padding">
         <h1>{{name}}</h1>
-        <p>Description of podcasts I listen to or post</p>
         <p>{{nfollowers}} followers, following {{nfollowing}}</p>
 
         <button class="button button-block button-positive" ng-click="follow()">
             Follow
         </button>
+        <ion-list>
+            <ion-item ng-repeat="ps in posts" type="item-text-wrap">
 
+                <h2><b>{{ps.author}} : {{ps.podcast.title}}</b></h2>
+                <div class="item item-body">
+                    {{ps.comment}}
+
+                </div>
+                <div data-tap-disabled="true">
+                    <audio id="{{ps._id}}" controls>
+                        <source src="{{ps.audiosrc}}" type="audio/mpeg">
+                    </audio>
+                </div>
+            </ion-item>
+        </ion-list>
         <div class="tabContainer">
             <ion-tabs class="tabs-striped tabs-top">
-
-                <ion-tab title="Posts" ui-sref="sidemenu.tab.otherprofile.posts">
-                    <ion-nav-view name="tabotherposts"></ion-nav-view>
-                </ion-tab>
 
                 <ion-tab title="Followers" ui-sref="sidemenu.tab.otherprofile.followers">
                     <ion-nav-view name="tabotherfollowers"></ion-nav-view>

@@ -1,0 +1,31 @@
+﻿<ion-view view-title="New Post">
+    <ion-content>
+        <h1>Create Post</h1>
+        <div class="list">
+            <label class="item item-input">
+                <input type="text" placeholder="Comment" ng-model="postComment">
+            </label>
+            <p>A little blurb about your podcast</p>
+
+        </div>
+
+
+
+        <ion-list>
+            <ion-item ng-repeat="psr in searchResults" type="item-text-wrap" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                <h2><b>{{psr.title}}</b></h2>
+                <p>{{psr.description}}</p>
+
+            </ion-item>
+        </ion-list>
+
+        <p>select a podcast</p>
+
+
+        <br />
+
+        <button class="button button-block button-positive" ng-click="createPost(postComment)">
+            Done
+        </button>
+    </ion-content>
+</ion-view>
