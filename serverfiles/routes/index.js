@@ -51,6 +51,58 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/api/v1/podcasts/search/:query', function (req, res) {
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection("podcasts").find({
+                $or: [
+                    {title: req.params.query},
+                    {topic: req.params.query},
+                    {fileName: req.params.query},
+                    {owner: req.params.query}
+                ]
+            }).limit(20).toArray(function (err, requestedPodcast) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedPodcast.length <= 0) {
+                    res.send({message: "No Podcast episode found!"});
+                } else {
+                    console.log("Search result: ");
+                    console.log(requestedPodcast);
+                    res.send(requestedPodcast);
+                }
+                db.close();
+            });
+        });
+    });
+    app.get('/api/v1/podcasts/series/:query', function (req, res) {
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection("podcasts").find({
+                $or: [
+                    {topic: req.params.query}
+                ]
+            }).limit(50).toArray(function (err, requestedSeries) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedSeries.length <= 0) {
+                    res.send({message: "No Podcast series found!"});
+                } else {
+                    console.log("Series array send: ");
+                    console.log(requestedSeries);
+                    res.send(requestedSeries);
+                }
+                db.close();
+            });
+        });
+    });
+
     app.get('/api/v1/users', function (req, res) {
         MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
             if (err) {
@@ -107,9 +159,9 @@ module.exports = function (app) {
                 console.log(requestedUser);
                 if (requestedUser) {
 
-                    if (requestedUser.following.indexOf(newFollower) <= 0) {
+                    if (requestedUser.following.indexOf(newFollower) < 0) {
 
-                        db.collection("users").update({_id: newFollower}, {$addToSet: {"follower": currentUser}}, function (err, updatedFollower) {
+                        db.collection("users").update({_id: newFollower}, {$addToSet: {"followers": currentUser}}, function (err, updatedFollower) {
                             if (err) {
                                 throw err;
                             }
@@ -143,9 +195,11 @@ module.exports = function (app) {
     });
 
     app.post('/api/v1/podcasts/upload', app.locals.upload.single('podcast'), function (req, res) {
+        //noinspection JSUnresolvedVariable
         console.log(req.file);
         console.log(req.body);
 
+        //noinspection JSUnresolvedVariable
         var podJson = {
             "title": req.body.title,
             "topic": req.body.topic,
@@ -179,10 +233,112 @@ module.exports = function (app) {
                 if (err) {
                     throw err;
                 }
-                console.log("Add podcast "+ podJson.topic + " to publishedPodcasts of " + podJson.owner);
+                console.log("Add podcast " + podJson.topic + " to publishedPodcasts of " + podJson.owner);
             })
-
         });
+    });
 
+    app.get('/api/v1/podcasts/:id', function (req, res) {
+
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+
+            var ObjectID = require('mongodb').ObjectID;
+            var o_id = new ObjectID(req.params.id);
+
+            db.collection("podcasts").findOne({_id: o_id}, function (err, requestedUser) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedUser) {
+                    console.log("GET single podcast: ");
+                    console.log(requestedUser);
+
+
+                    res.download(requestedUser.path);
+                } else {
+                    res.send({message: "No podcast found!"});
+                }
+                db.close();
+            });
+        });
+    });
+
+    app.get('/api/v1/posts/:id', function (req, res) {
+
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+
+            var ObjectID = require('mongodb').ObjectID;
+            var o_id = new ObjectID(req.params.id);
+
+            db.collection("posts").findOne({_id: o_id}, function (err, requestedUser) {
+                if (err) {
+                    throw err;
+                }
+                if (requestedUser) {
+                    console.log("GET single post: ");
+                    console.log(requestedUser);
+
+
+                    res.send(requestedUser);
+                } else {
+                    res.send({message: "No post found!"});
+                }
+                db.close();
+            });
+        });
+    });
+
+    app.post('/api/v1/posts/creation', function (req, res) {
+        if (!req.body) return res.sendStatus(400);
+        console.log("User posted: ");
+        req.body.createdOn = new Date();
+        console.log(req.body);      // your JSON
+        MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection("posts").insert(req.body, function (err, insertedPost) {
+                if (err) {
+                    console.log("ERROR: " + err.message);
+                    res.send(err.message);
+                    //throw err;
+                } else {
+                    console.log(insertedPost);
+                    db.collection("users").update(
+                        {following: {$in: [req.body.author]}}, //
+                        {$addToSet: {"newsfeed": insertedPost.ops[0]}},
+                        function (err) {
+                            if (err) {
+                                console.log("ERROR: " + err.message);
+                                res.send(err.message);
+                                //throw err;
+                            } else {
+                                console.log("Newsfeed of followers updated");
+                                db.collection("users").update(
+                                    {_id:  req.body.author}, //
+                                    {$addToSet: {"publishedPosts": insertedPost.ops[0]}},
+                                    function (err) {
+                                        if (err) {
+                                            console.log("ERROR: " + err.message);
+                                            res.send(err.message);
+                                            //throw err;
+                                        } else {
+                                            res.send({message: "Post successfully published"});
+                                            console.log("publishedPost array of author updated");
+                                            db.close();
+
+                                        }
+                                    });
+                            }
+                        });
+                }
+            });
+        });
     });
 };
