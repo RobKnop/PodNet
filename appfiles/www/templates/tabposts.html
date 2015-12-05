@@ -1,0 +1,19 @@
+﻿<ion-view view-title="tabposts">
+    <ion-content class="has-tabs-top has-subheader">
+        <ion-list>
+            <ion-item ng-repeat="ps in posts" type="item-text-wrap">
+
+                <h2><b>{{ps.author}} : {{ps.podcast.title}}</b></h2>
+                <div class="item item-body">
+                    {{ps.comment}}
+
+                </div>
+                <div data-tap-disabled="true">
+                    <audio id="{{ps._id}}" controls>
+                        <source src="{{ps.audiosrc}}" type="audio/mpeg">
+                    </audio>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
