@@ -104,13 +104,45 @@ angular.module('starter.controllers', [])
 //controller for landing page
 .controller('DashCtrl', function ($scope, $http, $sce) {
     var selfData = JSON.parse(window.localStorage['selfData']);
-    $scope.posts = selfData.newsfeed;
-   for (var i = 0; i < $scope.posts.length; i++) {
-        var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
-        
-        $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
-    }
+
+    var getSignInURL = 'http://54.183.235.161:8080/api/v1/users/';
+    getSignInURL += selfData._id;
+
+
+    $http({
+        method: 'GET',
+        url: getSignInURL,
+        data: null,
+        headers: { 'Content-Type': 'application/json' }
+    }).then(function (resp) {
+        console.log('Sign in Success', resp);
+        if (resp.data.message == 'No user found!') {
+        }
+        else {
+            selfData = JSON.parse(window.localStorage['selfData']);
+            $scope.posts = selfData.newsfeed;
+            $scope.emptyText = "";
+            if ($scope.posts) {
+                for (var i = 0; i < $scope.posts.length; i++) {
+                    var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+                    $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+                }
+                if ($scope.posts.length == 0) {
+                    $scope.emptyText = "No Posts Available. Follow some users to see podcasts!"
+                }
+            }
+            else {
+                $scope.emptyText = "No Posts Available. Follow some users to see podcasts!"
+            }
+        }
+    }, function (err) {
+        //get request failed
+        console.error('ERR', err);
+
+    });
     
+   
 })
 
 .controller('ChatsCtrl', function ($scope, Chats) {
@@ -178,7 +210,7 @@ angular.module('starter.controllers', [])
     }
 
 })
-.controller('OtherProfileCtrl', function ($scope, $stateParams, $state, $http, $ionicPopup) {
+.controller('OtherProfileCtrl', function ($scope, $stateParams, $state, $http, $sce, $ionicPopup) {
     var searchResults = JSON.parse(window.localStorage['searchResults']);
     var index = -1;
     if (searchResults) {
@@ -208,6 +240,7 @@ angular.module('starter.controllers', [])
                 $state.go('sidemenu.tab.selfprofile');
             }
             else {
+                console.log("otherviewdata", resp.data);
                 window.localStorage['viewData'] = JSON.stringify(resp.data);
                 $scope.name = resp.data.firstName + " " + resp.data.lastName;
                 $scope.nfollowers = resp.data.followers.length;
@@ -218,6 +251,17 @@ angular.module('starter.controllers', [])
                 }
                 else {
                     $scope.nfollowing = 0;
+                }
+
+                var selfData = JSON.parse(window.localStorage['viewData']);
+                $scope.posts = selfData.publishedPosts;
+                console.log("newsfeed", selfData.publishedPosts);
+                if ($scope.posts) {
+                    for (var i = 0; i < $scope.posts.length; i++) {
+                        var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+                        $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+                    }
                 }
             }
 
@@ -243,8 +287,19 @@ angular.module('starter.controllers', [])
         else {
             $scope.nfollowing = 0;
         }
-    }
 
+        var selfData = JSON.parse(window.localStorage['viewData']);
+        $scope.posts = selfData.publishedPosts;
+        console.log("newsfeed", selfData.publishedPosts);
+        if ($scope.posts) {
+            for (var i = 0; i < $scope.posts.length; i++) {
+                var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+                $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+            }
+        }
+    }
+    
     $scope.follow = function () {
         var selfData = JSON.parse(window.localStorage['selfData']);
         var otherData = JSON.parse(window.localStorage['viewData']);
@@ -307,27 +362,74 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('SelfProfileCtrl', function ($scope) {
-    window.localStorage['viewData'] = window.localStorage['selfData'];
-    window.localStorage['searchResults'] = null;
+.controller('SelfProfileCtrl', function ($scope, $http, $sce) {
     var selfData = JSON.parse(window.localStorage['selfData']);
-    console.log('selfData', selfData);
-    $scope.name = selfData.firstName + " " + selfData.lastName;
 
-    $scope.nfollowers = selfData.followers.length;
-    
-    
-    if (selfData.following.length) {
-        $scope.nfollowing = selfData.following.length;
-    }
-    else {
-        $scope.nfollowing = 0;
-    }
+    var getSignInURL = 'http://54.183.235.161:8080/api/v1/users/';
+    getSignInURL += selfData._id;
 
+
+    $http({
+        method: 'GET',
+        url: getSignInURL,
+        data: null,
+        headers: { 'Content-Type': 'application/json' }
+    }).then(function (resp) {
+        console.log('Sign in Success', resp);
+        if (resp.data.message == 'No user found!') {
+        }
+        else {
+            //sign in succeeded
+            window.localStorage['selfData'] = JSON.stringify(resp.data);
+
+
+            window.localStorage['viewData'] = window.localStorage['selfData'];
+            window.localStorage['searchResults'] = null;
+            selfData = JSON.parse(window.localStorage['selfData']);
+            console.log('selfData', selfData);
+            $scope.name = selfData.firstName + " " + selfData.lastName;
+
+            $scope.nfollowers = selfData.followers.length;
+
+
+            if (selfData.following.length) {
+                $scope.nfollowing = selfData.following.length;
+            }
+            else {
+                $scope.nfollowing = 0;
+            }
+            var selfData = JSON.parse(window.localStorage['viewData']);
+            $scope.posts = selfData.publishedPosts;
+            //console.log("newsfeed", selfData.publishedPosts);
+            if ($scope.posts) {
+                for (var i = 0; i < $scope.posts.length; i++) {
+                    var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+                    $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+                }
+            }
+        }
+    }, function (err) {
+        //get request failed
+        console.error('ERR', err);
+
+    });
+
+
+    
     
 })
-.controller('TabPostsCtrl', function ($scope) {
+.controller('TabPostsCtrl', function ($scope, $http, $sce) {
     var selfData = JSON.parse(window.localStorage['viewData']);
+    $scope.posts = selfData.publishedPosts;
+    console.log("newsfeed", selfData.publishedPosts);
+    if ($scope.posts) {
+        for (var i = 0; i < $scope.posts.length; i++) {
+            var getPodURL = 'http://54.183.235.161:8080/api/v1/podcasts/' + $scope.posts[i].podcast._id;
+
+            $scope.posts[i].audiosrc = $sce.trustAsResourceUrl(getPodURL);
+        }
+    }
 })
 .controller('TabFollowingCtrl', function ($scope) {
     var selfData = JSON.parse(window.localStorage['viewData']);

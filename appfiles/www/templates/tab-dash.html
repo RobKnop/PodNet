@@ -1,6 +1,7 @@
 <ion-view view-title="Podcast Feed"> 
     <ion-content>
         <ion-list>
+            <h2>{{emptyText}}</h2>
             <ion-item ng-repeat="ps in posts" type="item-text-wrap">
 
                 <h2><b>{{ps.author}} : {{ps.podcast.title}}</b></h2>
