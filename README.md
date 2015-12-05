@@ -4,12 +4,14 @@ by Andrew Zhang, Robert Knop <br />
 working in a class group project @ CSULB
 
 ###Objectives
-The application connects Podcast Producer and Podcast Consumer in a social networking way.
-The network bases like Twitter on the "Follower Principle". 
-Consumer can recommend podcast chapters, episodes to his follower. 
-Additional consumer can interact with the Podcast Producer to give feedback, make suggestions.
+PodNet is a social network, where user can upload own podcast to share them with their followers. Uploading own podcasts is optional.
+The network bases like Twitter on the "Follower Principle". User can recommend podcast series, podcast episodes by creating posts. A post includes the actual podcast file and comment. Every follower receives this post in his newsfeed and can immediately start listening to the recommended podcast episode.<br />
+The problem, which the current podcast community has, is that the users consume it in podcast catcher, which is providing a list based structure. Podcast listener only listens to a self subscribed podcast list. <br />
+If you wish to share the podcast, you have to post the link in your social network. This post may receive your desired target audience in a mixed newsfeed with post from other friends, pictures and news. Friends who are not interested in podcasts also may see your post.
+PodNet gives their users a place to share their podcasts with their desired audience with 100% guaranteed organic reach. There are not any mix-ups with non-podcast related content. The newsfeed makes it easier to explore new podcasts, because every post is a recommendation of a friend. That’s why you can expect a certain quality.<br />
 
-Podcast Producer can upload his own podcast and share with his listeners.
+Technical Implementation:<br />
+To deliver a reasonable performance with scalability in PodNet is powered by an Express.Js server with a MongoDB NoSQL database as the backend. Clients are Android and iOS smart phones running the social network application, which is developed with the Ionic framework. In this client-server architecture, the clients use the RESTful API provided by the Express.Js application. The documentation of the RESTful API is located in this Readme.md. <br />
 
 ##User stories
 
