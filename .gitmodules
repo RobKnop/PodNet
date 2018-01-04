@@ -1,0 +1,3 @@
+[submodule "testsubmodule/ansible-role-docker"]
+	path = testsubmodule/ansible-role-docker
+	url = git@github.com:geerlingguy/ansible-role-docker.git
